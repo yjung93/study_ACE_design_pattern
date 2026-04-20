@@ -22,8 +22,7 @@ namespace Reactor_1_0
 
 class Reactor
 {
-public:
-
+  public:
     struct EvHandlerInfo
     {
         ReactorMask mask;
@@ -32,28 +31,24 @@ public:
 
     typedef std::unordered_map<int, EvHandlerInfo> EventHandlerRepository;
 
-    static Reactor* getInstance();
-    static void closeSingleton();
+    static Reactor *getInstance();
     int runReactorEventLoop();
     int handleEvents();
-    int deactivated();
     int registerHandler( EventHandler *event_handler, ReactorMask mask );
     int removeHandler( EventHandler *event_handler, ReactorMask mask );
     void dbgRepository( std::string title );
- 
-protected:
 
-
+  protected:
     static Reactor *mInstance;
     EventHandlerRepository mEventHandlerRepository;
 
-private:
+  private:
     Reactor();
     virtual ~Reactor();
     void notifySelectLoop();
 
-    std::recursive_mutex mMutexRepoository;
-    int mWakeupPipe[2];  // 0: read end, 1: write end
+    std::recursive_mutex mMutexRepository;
+    int mWakeupPipe[2]; // 0: read end, 1: write end
 };
 
 } /* namespace Reactor_1_0 */

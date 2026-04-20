@@ -19,7 +19,7 @@ class ActObjAcceptor : public Reactor_1_0::EventHandler
     virtual ~ActObjAcceptor();
 
     void open();
-    int handleInput( int fd = INVALID_HANDLE ) override;
+    int handleInput( int fd = Reactor_1_0::INVALID_HANDLE ) override;
     void removeConnection( int fd );
 
   private:

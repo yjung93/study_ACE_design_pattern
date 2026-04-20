@@ -19,9 +19,9 @@ Proactor::Proactor()
       mAiocbListCurSize( 0 ),
       mNumDeferredAiocb( 0 ),
       mNumStartedAio( 0 ),
-      mHandle( INVALID_HANDLE ),
+      mHandle( Reactor_1_0::INVALID_HANDLE ),
       mAiocbNotifyPipeManager( nullptr ),
-      mNotifyPipeReadHandle( INVALID_HANDLE )
+      mNotifyPipeReadHandle( Reactor_1_0::INVALID_HANDLE )
 {
     createResultAiocbList();
     createNotifyManager();

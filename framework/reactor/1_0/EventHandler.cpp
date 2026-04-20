@@ -12,8 +12,9 @@ using namespace std;
 namespace Reactor_1_0
 {
 
-EventHandler::EventHandler( Reactor *reactor ) :
-                mReactor( reactor )
+EventHandler::EventHandler( Reactor *reactor )
+    : mReactor( reactor ),
+      mFd( INVALID_HANDLE )
 {
     cout << "EventHandler::"
          << __FUNCTION__
@@ -36,7 +37,6 @@ int EventHandler::handleInput( int fd )
          << ": "
          << endl;
     return -1;
-
 }
 
 int EventHandler::handleOutput( int fd )
@@ -46,17 +46,6 @@ int EventHandler::handleOutput( int fd )
          << ": "
          << endl;
     return -1;
-
-}
-
-int EventHandler::handleException( int fd )
-{
-    cout << "EventHandler::"
-         << __FUNCTION__
-         << ": "
-         << endl;
-    return -1;
-
 }
 
 int EventHandler::handleClose( int fd )
@@ -65,21 +54,10 @@ int EventHandler::handleClose( int fd )
          << __FUNCTION__
          << ": "
          << endl;
-    return -1;
-
+    return 0;
 }
 
-int EventHandler::handleSignal( int signum )
-{
-    cout << "EventHandler::"
-         << __FUNCTION__
-         << ": "
-         << endl;
-    return -1;
-
-}
-
-Reactor* EventHandler::getReactor() const
+Reactor *EventHandler::getReactor() const
 {
     return mReactor;
 }

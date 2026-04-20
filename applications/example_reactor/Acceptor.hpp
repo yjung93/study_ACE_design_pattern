@@ -23,7 +23,7 @@ public:
     virtual ~Acceptor();
 
     void open();
-    int handleInput( int fd = INVALID_HANDLE ) override;
+    int handleInput( int fd = Reactor_1_0::INVALID_HANDLE ) override;
 
 private:
     struct sockaddr_in mAddress;

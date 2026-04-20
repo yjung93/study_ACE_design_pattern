@@ -6,14 +6,14 @@ namespace Proactor_1_0
 {
 
 Handler::Handler()
-    : mProactor( 0 ), mHandle( INVALID_HANDLE )
+    : mProactor( 0 ), mHandle( Reactor_1_0::INVALID_HANDLE )
 {
     Handler::Proxy *p = new Handler::Proxy( this );
     this->mProxy.reset( p );
 }
 
 Handler::Handler( Proactor *d )
-    : mProactor( d ), mHandle( INVALID_HANDLE )
+    : mProactor( d ), mHandle( Reactor_1_0::INVALID_HANDLE )
 {
     Handler::Proxy *p = new Handler::Proxy( this );
     this->mProxy.reset( p );

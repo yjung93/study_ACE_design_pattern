@@ -53,7 +53,6 @@ int main()
         clientThread.join();
     }
 
-    Reactor_1_0::Reactor::closeSingleton();
     return 0;
 }
 

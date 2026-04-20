@@ -41,8 +41,8 @@ protected:
     virtual int acceptSvcHandler( SVC_HANDLER *svcHandler );
     virtual int activateSvcHandler( SVC_HANDLER *svcHandler );
 
-    int handleInput( int fd = INVALID_HANDLE ) override;
-    int handleClose( int handle = INVALID_HANDLE ) override;
+    int handleInput( int fd = Reactor_1_0::INVALID_HANDLE ) override;
+    int handleClose( int handle = Reactor_1_0::INVALID_HANDLE ) override;
 
 private:
     // Concrete factory for accepting connections from clients...

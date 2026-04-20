@@ -36,6 +36,5 @@ int main( int argc, char **argv )
         serverThread.join();
     }
 
-    Reactor_1_0::Reactor::closeSingleton();
     return 0;
 }

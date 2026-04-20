@@ -41,7 +41,7 @@ void AsynchResult::setError( u_long errcode )
 
 int AsynchResult::event() const
 {
-    return INVALID_HANDLE;
+    return Reactor_1_0::INVALID_HANDLE;
 }
 
 u_long AsynchResult::offset() const

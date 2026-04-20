@@ -26,7 +26,7 @@ public:
 	void open();
 
 private:
-	  int handleInput( int fd = INVALID_HANDLE ) override;
+	  int handleInput( int fd = Reactor_1_0::INVALID_HANDLE ) override;
 
 	  Acceptor *mOwner;
 	  std::unique_ptr<SyncService> mSyncService;
