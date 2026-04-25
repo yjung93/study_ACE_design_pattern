@@ -7,11 +7,8 @@
 #include "applications/example_reactor/Acceptor.hpp"
 #include "applications/example_reactor/ServerEventHandler.hpp"
 #include <arpa/inet.h>
-#include <iostream>
+#include "framework/common/Logger.hpp"
 #include <unistd.h>
-
-
-using namespace std;
 
 namespace example_reactor
 {
@@ -73,9 +70,7 @@ void Acceptor::open()
         exit( EXIT_FAILURE );
     }
 
-    std::cout << "Server listening on port "
-              << PORT
-              << std::endl;
+    LOG_INFO( "server listening on port " << PORT );
 
     getReactor()->registerHandler( this, EventHandler::ACCEPT_MASK );
 
@@ -83,8 +78,7 @@ void Acceptor::open()
 
 int Acceptor::handleInput( int fd )
 {
-    cout << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 
     int addrlen = sizeof(mAddress);
     int newSocketFd = accept( fd, (struct sockaddr*) &mAddress, (socklen_t*) &(addrlen) );
@@ -99,9 +93,7 @@ int Acceptor::handleInput( int fd )
     serverEventHandler->setHandle( newSocketFd );
     serverEventHandler->open();
 
-    std::cout << "New connection established, socket FD: "
-              << newSocketFd
-              << std::endl;
+    LOG_INFO( "new connection established, socket FD: " << newSocketFd );
     return 0;
 }
 

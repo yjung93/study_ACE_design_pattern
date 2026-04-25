@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.10)
 PROJECT(study_framework)
 
 set(CMAKE_CXX_COMPILER g++)
-add_definitions("-Wall -std=c++11")
+add_definitions("-Wall -std=c++17")
 
 include_directories(${CMAKE_SOURCE_DIR})
 

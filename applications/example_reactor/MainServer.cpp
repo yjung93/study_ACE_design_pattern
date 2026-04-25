@@ -6,17 +6,14 @@
  */
 
 #include "applications/example_reactor/Acceptor.hpp"
-#include <iostream>
+#include "framework/common/Logger.hpp"
 #include <thread>
 
 #include "framework/reactor/1_0/Reactor.hpp"
 
-using namespace std;
-
 void serverThreadFuncion( Reactor_1_0::Reactor *reactor )
 {
-    cout << "serverThreadFuncion"
-         << endl;
+    LOG_INFO( "called" );
 
     reactor->runReactorEventLoop();
 }

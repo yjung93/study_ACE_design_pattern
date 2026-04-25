@@ -4,10 +4,8 @@
  *  Created on: Jan 12, 2024
  *      Author: yjung93
  */
-#include <iostream>
 #include "EventHandler.hpp"
-
-using namespace std;
+#include "framework/common/Logger.hpp"
 
 namespace Reactor_1_0
 {
@@ -16,44 +14,29 @@ EventHandler::EventHandler( Reactor *reactor )
     : mReactor( reactor ),
       mFd( INVALID_HANDLE )
 {
-    cout << "EventHandler::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 }
 
 EventHandler::~EventHandler()
 {
-    cout << "EventHandler::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 }
 
 int EventHandler::handleInput( int fd )
 {
-    cout << "EventHandler::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
     return -1;
 }
 
 int EventHandler::handleOutput( int fd )
 {
-    cout << "EventHandler::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
     return -1;
 }
 
 int EventHandler::handleClose( int fd )
 {
-    cout << "EventHandler::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
     return 0;
 }
 
@@ -74,12 +57,7 @@ int EventHandler::getHandle() const
 
 void EventHandler::setHandle( int fd )
 {
-    cout << "EventHandler::"
-         << __FUNCTION__
-         << ": "
-         << "fd: "
-         << fd
-         << endl;
+    LOG_INFO( "fd=" << fd );
     mFd = fd;
 }
 

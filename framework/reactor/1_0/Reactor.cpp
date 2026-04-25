@@ -9,9 +9,9 @@
 
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <iostream>
 #include <sstream>
 #include <vector>
+#include "framework/common/Logger.hpp"
 
 #include "EventHandler.hpp"
 
@@ -34,7 +34,7 @@ Reactor::Reactor()
 
 Reactor::~Reactor()
 {
-    std::cout << "Reactor shutting down, cleaning up resources..." << std::endl;
+    LOG_INFO( "shutting down, cleaning up resources" );
     close( mWakeupPipe[0] ); // clean up read end
     close( mWakeupPipe[1] ); // clean up write end
 }
@@ -47,17 +47,14 @@ Reactor *Reactor::getInstance()
 
 int Reactor::runReactorEventLoop()
 {
-    printf( "Reactor::%s\n", __FUNCTION__ );
+    LOG_INFO( "called" );
 
     return handleEvents();
 }
 
 int Reactor::handleEvents()
 {
-    std::cout << "Reactor::"
-              << __FUNCTION__
-              << ":"
-              << std::endl;
+    LOG_INFO( "called" );
 
     int result = -1;
     fd_set readfds;
@@ -103,11 +100,7 @@ int Reactor::handleEvents()
             }
         }
         // Wait for an activity on one of the sockets
-        std::cout << "Reactor::"
-                  << __FUNCTION__
-                  << ": select(), maxFd="
-                  << maxFd
-                  << std::endl;
+        LOG_DEBUG( "select(), maxFd=" << maxFd );
 
         int activity = select( maxFd + 1,
                                &readfds,
@@ -117,16 +110,11 @@ int Reactor::handleEvents()
 
         if ( ( activity < 0 ) && ( errno != EINTR ) )
         {
-            std::cerr << "select error"
-                      << std::endl;
+            LOG_ERROR( "select failed" );
         }
         else
         {
-            std::cout << "Reactor::"
-                      << __FUNCTION__
-                      << ": select, activity="
-                      << activity
-                      << std::endl;
+            LOG_DEBUG( "select, activity=" << activity );
         }
 
         // Handle wakeup
@@ -135,10 +123,7 @@ int Reactor::handleEvents()
             char buf[64];
             ::read( mWakeupPipe[0], buf, sizeof( buf ) ); // Drain pipe
 
-            std::cout << "Reactor::"
-                      << __FUNCTION__
-                      << ": woke up from pipe"
-                      << std::endl;
+            LOG_DEBUG( "woke up from pipe" );
         }
 
         std::vector<EvHandlerInfo> readhandles;
@@ -205,31 +190,17 @@ int Reactor::registerHandler( EventHandler *event_handler, ReactorMask mask )
 
             mEventHandlerRepository[event_handler->getHandle()] = evHandlerInfo;
 
-            std::cout << "Reactor::"
-                      << __FUNCTION__
-                      << ": handle="
-                      << event_handler->getHandle()
-                      << ", mask=0x"
-                      << std::hex
-                      << mask
-                      << std::dec
-                      << " add information"
-                      << std::endl;
+            LOG_DEBUG( "handle=" << event_handler->getHandle()
+                      << ", mask=0x" << std::hex << mask << std::dec
+                      << " add information" );
         }
         else
         {
             mEventHandlerRepository[event_handler->getHandle()].mask |= mask;
 
-            std::cout << "Reactor::"
-                      << __FUNCTION__
-                      << ": handle="
-                      << event_handler->getHandle()
-                      << ", mask=0x"
-                      << std::hex
-                      << mask
-                      << std::dec
-                      << " already exist, update information"
-                      << std::endl;
+            LOG_DEBUG( "handle=" << event_handler->getHandle()
+                      << ", mask=0x" << std::hex << mask << std::dec
+                      << " already exist, update information" );
         }
 
         notifySelectLoop();
@@ -253,27 +224,14 @@ int Reactor::removeHandler( EventHandler *event_handler, ReactorMask mask )
         return -1;
     }
 
-    std::cout << "Reactor::"
-              << __FUNCTION__
-              << ":"
-              << "handle="
-              << event_handler->getHandle()
-              << " mask=0x"
-              << std::hex
-              << mask
-              << std::dec
-              << std::endl;
+    LOG_INFO( "handle=" << event_handler->getHandle()
+              << " mask=0x" << std::hex << mask << std::dec );
 
     int result = 0;
 
     if ( mEventHandlerRepository.find( event_handler->getHandle() ) == mEventHandlerRepository.end() )
     {
-        std::cout << "Reactor::"
-                  << __FUNCTION__
-                  << ": handle="
-                  << event_handler->getHandle()
-                  << "does not exist"
-                  << std::endl;
+        LOG_ERROR( "handle=" << event_handler->getHandle() << " does not exist" );
 
         result = -1;
     }
@@ -288,12 +246,7 @@ int Reactor::removeHandler( EventHandler *event_handler, ReactorMask mask )
             mEventHandlerRepository.erase( event_handler->getHandle() );
         }
 
-        std::cout << "Reactor::"
-                  << __FUNCTION__
-                  << ": handle="
-                  << event_handler->getHandle()
-                  << " is removed"
-                  << std::endl;
+        LOG_INFO( "handle=" << event_handler->getHandle() << " is removed" );
 
         notifySelectLoop();
     }
@@ -315,24 +268,13 @@ void Reactor::dbgRepository( std::string title )
 {
     const std::lock_guard<std::recursive_mutex> lock( mMutexRepository );
 
-    std::cout << title
-              << ": mEventHandlerRepository size="
-              << mEventHandlerRepository.size()
-              << std::endl;
+    LOG_DEBUG( title << ": mEventHandlerRepository size=" << mEventHandlerRepository.size() );
 
     for ( const auto &itHandler : mEventHandlerRepository )
     {
-        std::cout << title
-                  << ": ["
-                  << itHandler.first
-                  << "]"
-                  << " handle="
-                  << itHandler.second.evHandler->getHandle()
-                  << " mask=0x"
-                  << std::hex
-                  << itHandler.second.mask
-                  << std::dec
-                  << std::endl;
+        LOG_DEBUG( title << ": [" << itHandler.first << "]"
+                  << " handle=" << itHandler.second.evHandler->getHandle()
+                  << " mask=0x" << std::hex << itHandler.second.mask << std::dec );
     }
 }
 } /* namespace Reactor_1_0 */
