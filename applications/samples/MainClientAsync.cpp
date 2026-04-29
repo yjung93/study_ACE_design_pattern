@@ -1,4 +1,3 @@
-#include <iostream>
 #include <cstring>
 #include <cerrno>
 #include <unistd.h>
@@ -6,8 +5,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <sys/select.h>
-
-using namespace std;
+#include "framework/common/Logger.hpp"
 
 constexpr int PORT = 8080;
 constexpr char SERVER_IP[] = "127.0.0.1";
@@ -37,14 +35,7 @@ int main()
         return 1;
     }
 
-    cout
-    << "SockStream::"
-    << __FUNCTION__
-    << ": 0.2 "
-    << " fcntl value =0x"
-    << std::hex
-    << fcntl( sock, F_GETFL, 0 )
-    << endl;
+    LOG_INFO( "fcntl value=0x" << std::hex << fcntl( sock, F_GETFL, 0 ) );
 
     // 2. Initiate connect (will return EINPROGRESS)
     struct sockaddr_in serv_addr;
@@ -53,7 +44,7 @@ int main()
     serv_addr.sin_port = htons( PORT );
     if ( inet_pton( AF_INET, SERVER_IP, &serv_addr.sin_addr ) <= 0 )
     {
-        std::cerr << "Invalid address\n";
+        LOG_ERROR( "invalid address" );
         close( sock );
         return 1;
     }
@@ -76,9 +67,7 @@ int main()
     tv.tv_sec = CONNECT_TIMEOUT_SEC;
     tv.tv_usec = 0;
 
-    std::cout << "Waiting up to "
-              << CONNECT_TIMEOUT_SEC
-              << " seconds for connection...\n";
+    LOG_INFO( "waiting up to " << CONNECT_TIMEOUT_SEC << " seconds for connection..." );
 
     int sel = select( sock + 1, nullptr, &writefds, nullptr, &tv );
     if ( sel < 0 )
@@ -88,7 +77,7 @@ int main()
         return 1;
     }else if ( sel == 0 )
     {
-        std::cerr << "Connection timed out\n";
+        LOG_ERROR( "connection timed out" );
         close( sock );
         return 1;
     }
@@ -104,14 +93,12 @@ int main()
     }
     if ( so_error != 0 )
     {
-        std::cerr << "connect failed: "
-                  << std::strerror( so_error )
-                  << "\n";
+        LOG_ERROR( "connect failed: " << std::strerror( so_error ) );
         close( sock );
         return 1;
     }
 
-    std::cout << "Connected successfully!\n";
+    LOG_INFO( "connected successfully!" );
 
     // 5. Switch back to blocking mode for simplicity (optional)
     fcntl( sock, F_SETFL, flags );
@@ -124,7 +111,7 @@ int main()
         close( sock );
         return 1;
     }
-    std::cout << "Message sent, waiting for reply...\n";
+    LOG_INFO( "message sent, waiting for reply..." );
 
     char buffer[1024];
     int n = recv( sock, buffer, sizeof(buffer) - 1, 0 );
@@ -133,13 +120,11 @@ int main()
         std::perror( "recv()" );
     }else if ( n == 0 )
     {
-        std::cout << "Server closed connection\n";
+        LOG_INFO( "server closed connection" );
     }else
     {
         buffer[n] = '\0';
-        std::cout << "Received: "
-                  << buffer
-                  << "\n";
+        LOG_INFO( "received: " << buffer );
     }
 
     close( sock );

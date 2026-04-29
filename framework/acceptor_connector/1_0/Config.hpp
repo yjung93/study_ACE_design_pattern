@@ -5,6 +5,7 @@ namespace AcceptorConnector_1_0
 {
 
 static constexpr int INVALID_HANDLE = -1;
+static constexpr int BACKLOG = 5;
 }
 
 #endif /* FRAMEWORK_ACCEPTOR_CONNECTOR_1_0_CONFIG_HPP_ */

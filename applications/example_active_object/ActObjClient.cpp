@@ -2,10 +2,8 @@
 #include "ActObjClient.hpp"
 #include "ActObjMethodCallback.hpp"
 
-#include <iostream>
 #include <sys/socket.h>
-
-using namespace std;
+#include "framework/common/Logger.hpp"
 
 namespace ExActiveObject
 {
@@ -13,30 +11,21 @@ ActObjClient::ActObjClient( int socketFd )
     : mSocketFd( socketFd ),
       mUsecaseItterate( 0 )
 {
-    cout << "ActObjClient::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 }
 ActObjClient::~ActObjClient()
 {
-    cout << "ActObjClient::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 }
 
 int ActObjClient::open( void *args )
 {
-    cout << "ActObjClient::"
-         << __FUNCTION__
-         << endl;
-
+    LOG_INFO( "called" );
     return activate();
 }
 int ActObjClient::svc()
 {
-    cout << "ActObjClient::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 
     string message;
     while ( getQ( message ) == 0 )
@@ -54,9 +43,7 @@ int ActObjClient::getHandle()
 
 void ActObjClient::processMessage( const std::string &message )
 {
-    cout << "ActObjClient::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 
     string messageToSend = "Unknown Error";
 

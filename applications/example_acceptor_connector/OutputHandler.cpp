@@ -5,15 +5,13 @@
  *      Author: yjung93
  */
 
-#include <iostream>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
 #include <sys/socket.h>
 #include "OutputHandler.hpp"
 #include "framework/reactor/1_0/Reactor.hpp"
-
-using namespace std;
+#include "framework/common/Logger.hpp"
 
 namespace ex_acceptor_connector
 {
@@ -21,25 +19,17 @@ namespace ex_acceptor_connector
 OutputHandler::OutputHandler() :
                 ServiceHandler( Reactor_1_0::Reactor::getInstance() )
 {
-    cout << "OutputHandler::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 }
 
 OutputHandler::~OutputHandler()
 {
-    cout << "OutputHandler::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 }
 
 int OutputHandler::handleInput( int fd )
 {
-    cout << "OutputHandler::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 
     const int bufferSize = 1024;
 
@@ -50,12 +40,7 @@ int OutputHandler::handleInput( int fd )
     if ( valread == 0 )
     {
         // Client disconnected
-        cout << "OutputHandler::"
-             << __FUNCTION__
-             << ": "
-             << "Client disconnected, socket FD: "
-             << fd
-             << endl;
+        LOG_INFO( "client disconnected, socket FD: " << fd );
         peer().close_reader();
         getReactor()->removeHandler( this, ALL_EVENTS_MASK );
     }else if ( valread < 0 )
@@ -64,12 +49,7 @@ int OutputHandler::handleInput( int fd )
     }else
     {
         // Echo the message back to client
-        cout << "OutputHandler::"
-             << __FUNCTION__
-             << ": "
-             << "Received message: "
-             << buffer
-             << endl;
+        LOG_INFO( "received message: " << buffer );
 
     }
 
@@ -78,21 +58,15 @@ int OutputHandler::handleInput( int fd )
 
 int OutputHandler::handleOutput( int fd )
 {
-    cout << "OutputHandler::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 
-//    open((void*)this);
     return 0;
 }
 
 int OutputHandler::close()
 {
     int result = 0;
-    cout << "OutputHandler::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
     return result;
 }
 

@@ -1,6 +1,5 @@
-#include <iostream>
-
 #include "ActObjMethodRequests.hpp"
+#include "framework/common/Logger.hpp"
 
 namespace ExActiveObject
 {
@@ -12,16 +11,12 @@ RequestGetReturnMessage::RequestGetReturnMessage( ActObjServant &Servant,
       mReturnValue( returnVal ),
       mMessage( message )
 {
-    cout << "ActObjScheduler::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 }
 
 int RequestGetReturnMessage::call()
 {
-    cout << "ActObjScheduler::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 
     // status_update with the controller.
     this->mReturnValue.set( this->mServant.RequestGetReturnMessage( mMessage ) );

@@ -3,8 +3,7 @@
 #define FRAMEWORK_ACTIVE_OBJECT_1_0_FUTURE_CPP_
 
 #include "Future.hpp"
-#include <ostream>
-#include <iostream>
+#include "framework/common/Logger.hpp"
 
 namespace ActiveObject_1_0
 {
@@ -68,10 +67,7 @@ int FutureRep<T>::get( T &value, unsigned long int timeout )
 
         if ( rc == false )
         {
-            cout << "FutureRep::"
-                 << __FUNCTION__ << ": "
-                 << "time out"
-                 << endl;
+            LOG_INFO( "time out" );
             result = -1;
         }
     }

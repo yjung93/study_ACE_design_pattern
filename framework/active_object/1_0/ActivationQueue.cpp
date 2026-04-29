@@ -1,5 +1,5 @@
-#include <iostream>
 #include <thread>
+#include "framework/common/Logger.hpp"
 
 #include "ActivationQueue.hpp"
 
@@ -9,16 +9,12 @@ namespace ActiveObject_1_0
 ActivationQueue::ActivationQueue()
     : mState( STATE_ACTIVE )
 {
-    cout << "ActivationQueue::"
-         << __FUNCTION__ << ": "
-         << endl;
+    LOG_INFO( "called" );
 }
 
 ActivationQueue::~ActivationQueue()
 {
-    cout << "ActivationQueue::"
-         << __FUNCTION__ << ": "
-         << endl;
+    LOG_INFO( "called" );
     exit();
 }
 
@@ -35,31 +31,21 @@ MethodRequest *ActivationQueue::dequeue()
     mQueueCondition.wait( lock );
     if ( mState == STATE_SHUTDOWN )
     {
-        cout << "ActivationQueue::"
-             << __FUNCTION__ << ": "
-             << " exit"
-             << endl;
+        LOG_INFO( "exit" );
 
         return methodRequest;
     }
 
     if ( mMethodRequestQueue.empty() )
     {
-        cout << "ActivationQueue::"
-             << __FUNCTION__ << ": "
-             << " mMethodRequestQueue is empty"
-             << endl;
+        LOG_INFO( "mMethodRequestQueue is empty" );
     }
     else
     {
         methodRequest = mMethodRequestQueue.front();
 
         thread::id this_id = this_thread::get_id();
-        cout << "ActivationQueue::"
-             << __FUNCTION__
-             << " threadId="
-             << this_id
-             << endl;
+        LOG_INFO( "threadId=" << this_id );
 
         mMethodRequestQueue.erase( mMethodRequestQueue.begin() );
     }
@@ -71,11 +57,7 @@ int ActivationQueue::enqueue( MethodRequest *methodRequest )
 {
     thread::id this_id = this_thread::get_id();
 
-    cout << "ActivationQueue::"
-         << __FUNCTION__
-         << " threadId="
-         << this_id
-         << endl;
+    LOG_INFO( "threadId=" << this_id );
 
     lock_guard<mutex> guard( mQueueMutex );
 
@@ -86,9 +68,7 @@ int ActivationQueue::enqueue( MethodRequest *methodRequest )
 
 void ActivationQueue::exit()
 {
-    cout << "ActivationQueue::"
-         << __FUNCTION__ << ": "
-         << endl;
+    LOG_INFO( "called" );
 
     mState = STATE_SHUTDOWN;
     mQueueCondition.notify_one();

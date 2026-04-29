@@ -7,8 +7,7 @@
 
 #include "Config.hpp"
 #include "SockStream.hpp"
-
-using namespace std;
+#include "framework/common/Logger.hpp"
 
 namespace AcceptorConnector_1_0
 {
@@ -65,12 +64,7 @@ int SockStream::open( int type, int protocolFamily, int protocol, int reuseAddr 
         result = -1;
     }
 
-    cout << "SockStream::"
-         << __FUNCTION__
-         << ": "
-         << " handle : "
-         << getHandle()
-         << endl;
+    LOG_INFO( "handle: " << getHandle() );
 
     return result;
 }
@@ -98,16 +92,8 @@ int SockStream::enable( int value )
         }
     }
 
-    cout << "SockStream::"
-         << __FUNCTION__
-         << ": "
-         << " value = 0x"
-         << std::hex
-         << value
-         << ", fcntl-value = 0x"
-         << std::hex
-         << ::fcntl( this->getHandle(), F_GETFL, 0 )
-         << endl;
+    LOG_INFO( "value=0x" << std::hex << value
+              << ", fcntl-value=0x" << std::hex << ::fcntl( this->getHandle(), F_GETFL, 0 ) );
 
     return result;
 }
@@ -135,26 +121,15 @@ int SockStream::disable( int value )
         }
 
     }
-    cout << "SockStream::"
-         << __FUNCTION__
-         << ": "
-         << " value = 0x"
-         << std::hex
-         << value
-         << ", fcntl-value = 0x"
-         << std::hex
-         << ::fcntl( this->getHandle(), F_GETFL, 0 )
-         << endl;
+    LOG_INFO( "value=0x" << std::hex << value
+              << ", fcntl-value=0x" << std::hex << ::fcntl( this->getHandle(), F_GETFL, 0 ) );
 
     return result;
 }
 
 int SockStream::getRemoteAddr( sockaddr_in &socketAddr ) const
 {
-    cout << "SockStream::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 
     int result = 0;
     socklen_t peerLen = sizeof(socketAddr);

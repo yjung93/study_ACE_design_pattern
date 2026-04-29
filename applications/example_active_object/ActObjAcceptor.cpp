@@ -2,10 +2,8 @@
 #include "applications/example_active_object/ActObjAcceptor.hpp"
 #include "applications/example_active_object/ActObjMain.hpp"
 #include <arpa/inet.h>
-#include <iostream>
 #include <unistd.h>
-
-using namespace std;
+#include "framework/common/Logger.hpp"
 
 namespace ExActiveObject
 {
@@ -65,17 +63,14 @@ void ActObjAcceptor::open()
         exit( EXIT_FAILURE );
     }
 
-    std::cout << "Server listening on port "
-              << PORT
-              << std::endl;
+    LOG_INFO( "server listening on port " << PORT );
 
     getReactor()->registerHandler( this, EventHandler::ACCEPT_MASK );
 }
 
 int ActObjAcceptor::handleInput( int fd )
 {
-    cout << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 
     int addrlen = sizeof( mAddress );
     int newSocketFd = accept( fd, (struct sockaddr *) &mAddress, (socklen_t *) &( addrlen ) );
@@ -92,9 +87,7 @@ int ActObjAcceptor::handleInput( int fd )
     
     mConnections.emplace( newSocketFd, std::move( handler ) );
 
-    std::cout << "New connection established, socket FD: "
-              << newSocketFd
-              << std::endl;
+    LOG_INFO( "new connection established, socket FD: " << newSocketFd );
     return 0;
 }
 
@@ -104,9 +97,7 @@ void ActObjAcceptor::removeConnection( int fd )
     if ( it != mConnections.end() )
     {
         mConnections.erase( it );
-        std::cout << "Connection cleaned up, socket FD: "
-                  << fd
-                  << std::endl;
+        LOG_INFO( "connection cleaned up, socket FD: " << fd );
     }
 }
 

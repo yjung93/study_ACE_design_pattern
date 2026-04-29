@@ -3,6 +3,7 @@
 #include "AsynchResult.hpp"
 #include "Proactor.hpp"
 #include "Handler.hpp"
+#include "framework/common/Logger.hpp"
 
 #include "framework/reactor/1_0/EventHandler.hpp"
 
@@ -71,11 +72,7 @@ int AsynchResult::postCompletion( Proactor *proactor )
 
     if ( proactor == 0 )
     {
-        cout << "AsynchResult::"
-             << __FUNCTION__
-             << ": "
-             << "proactor null pointer"
-             << endl;
+        LOG_ERROR( "proactor null pointer" );
         return -1;
     }
 

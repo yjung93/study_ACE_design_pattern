@@ -1,36 +1,26 @@
 
 #include "SyncService.hpp"
-#include <iostream>
 #include <sys/socket.h>
-
-using namespace std;
+#include "framework/common/Logger.hpp"
 SyncService::SyncService( int socketFd )
     : mSocketFd( socketFd )
 {
-    cout << "SyncService::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 }
 SyncService::~SyncService()
 {
-    cout << "SyncService::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 }
 
 int SyncService::open( void *args )
 {
-    cout << "SyncService::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 
     return activate();
 }
 int SyncService::svc()
 {
-    cout << "SyncService::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 
     string message;
     while ( getQ( message ) == 0 )
@@ -43,9 +33,7 @@ int SyncService::svc()
 
 void SyncService::processMessage( const std::string &message )
 {
-    cout << "SyncService::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 
     string messageToSend = "Echo - " + message;
     send( mSocketFd, messageToSend.c_str(), messageToSend.size(), 0 );

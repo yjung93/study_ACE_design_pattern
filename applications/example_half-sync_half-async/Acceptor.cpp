@@ -7,10 +7,8 @@
 #include "applications/example_half-sync_half-async/Acceptor.hpp"
 #include "applications/example_half-sync_half-async/AsyncService.hpp"
 #include <arpa/inet.h>
-#include <iostream>
 #include <unistd.h>
-
-using namespace std;
+#include "framework/common/Logger.hpp"
 
 namespace ExHalfSyncAsync
 {
@@ -70,17 +68,14 @@ void Acceptor::open()
         exit( EXIT_FAILURE );
     }
 
-    std::cout << "Server listening on port "
-              << PORT
-              << std::endl;
+    LOG_INFO( "server listening on port " << PORT );
 
     getReactor()->registerHandler( this, EventHandler::ACCEPT_MASK );
 }
 
 int Acceptor::handleInput( int fd )
 {
-    cout << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 
     int addrlen = sizeof( mAddress );
     int newSocketFd = accept( fd, (struct sockaddr *) &mAddress, (socklen_t *) &( addrlen ) );
@@ -97,9 +92,7 @@ int Acceptor::handleInput( int fd )
     
     mConnections.emplace( newSocketFd, std::move( handler ) );
 
-    std::cout << "New connection established, socket FD: "
-              << newSocketFd
-              << std::endl;
+    LOG_INFO( "new connection established, socket FD: " << newSocketFd );
     return 0;
 }
 
@@ -109,9 +102,7 @@ void Acceptor::removeConnection( int fd )
     if ( it != mConnections.end() )
     {
         mConnections.erase( it );
-        std::cout << "Connection cleaned up, socket FD: "
-                  << fd
-                  << std::endl;
+        LOG_INFO( "connection cleaned up, socket FD: " << fd );
     }
 }
 

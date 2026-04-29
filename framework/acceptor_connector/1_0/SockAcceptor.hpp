@@ -10,8 +10,6 @@
 
 #include <arpa/inet.h>
 
-#include "framework/reactor/1_0/EventHandler.hpp"
-#include "framework/reactor/1_0/Reactor.hpp"
 #include "framework/acceptor_connector/1_0/SockStream.hpp"
 
 namespace AcceptorConnector_1_0
@@ -19,10 +17,10 @@ namespace AcceptorConnector_1_0
 
 class SockAcceptor
 {
-public:
+  public:
     typedef struct sockaddr_in PEER_ADDR;
 
-    SockAcceptor( Reactor_1_0::Reactor *reactor = Reactor_1_0::Reactor::getInstance() );
+    SockAcceptor();
     virtual ~SockAcceptor();
 
     int open( PEER_ADDR peerAddr );
@@ -30,11 +28,11 @@ public:
     void setHandle( int handle );
     int getHandle();
 
-private:
+  private:
     PEER_ADDR mAddress;
     int mHandle;
 };
 
-} /* namespace example_reactor */
+} // namespace AcceptorConnector_1_0
 
-#endif /* APPLICATIONS_EXAMPLE_REACTOR_ACCEPTOR_HPP_ */
+#endif /* FRAMEWORK_ACCEPTOR_CONNECTOR_1_0_SOCKACCEPTOR_HPP_ */

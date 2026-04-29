@@ -8,77 +8,46 @@
 #define FRAMEWORK_ACCEPTOR_CONNECTOR_1_0_CONNECTOR_CPP_
 
 #include <arpa/inet.h>
-#include <iostream>
 #include <cerrno>
+#include "framework/common/Logger.hpp"
 
 #include "Connector.hpp"
 
 namespace AcceptorConnector_1_0
 {
-template<typename SVC_HANDLER, typename PEER_CONNECTOR>
-Connector<SVC_HANDLER, PEER_CONNECTOR>::Connector( Reactor_1_0::Reactor *reactor, int flags ) :
-                Reactor_1_0::EventHandler( reactor )
+template <typename SVC_HANDLER, typename PEER_CONNECTOR>
+Connector<SVC_HANDLER, PEER_CONNECTOR>::Connector( Reactor_1_0::Reactor *reactor, int flags )
+    : Reactor_1_0::EventHandler( reactor )
 {
-    cout << "Connector<SVC_HANDLER, PEER_CONNECTOR>::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 
     this->open( reactor, flags );
 }
 
-template<typename SVC_HANDLER, typename PEER_CONNECTOR>
+template <typename SVC_HANDLER, typename PEER_CONNECTOR>
 Connector<SVC_HANDLER, PEER_CONNECTOR>::~Connector()
 {
-    cout << "Connector<SVC_HANDLER, PEER_CONNECTOR>::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 }
-template<typename SVC_HANDLER, typename PEER_CONNECTOR>
+template <typename SVC_HANDLER, typename PEER_CONNECTOR>
 int Connector<SVC_HANDLER, PEER_CONNECTOR>::open( Reactor_1_0::Reactor *reactor, int flags )
 {
-    cout << "Connector<SVC_HANDLER, PEER_CONNECTOR>::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 
     this->setReactor( reactor );
     this->mFlags = flags;
     return 0;
 }
 
-template<typename SVC_HANDLER, typename PEER_CONNECTOR>
+template <typename SVC_HANDLER, typename PEER_CONNECTOR>
 bool Connector<SVC_HANDLER, PEER_CONNECTOR>::close( SVC_HANDLER *&sh )
 {
-    cout << "Connector<SVC_HANDLER, PEER_CONNECTOR>::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 
     return true;
 }
 
-template<typename SVC_HANDLER, typename PEER_CONNECTOR>
-void Connector<SVC_HANDLER, PEER_CONNECTOR>::setReactor( Reactor_1_0::Reactor *reactor )
-{
-    cout << "Connector<SVC_HANDLER, PEER_CONNECTOR>::"
-         << __FUNCTION__
-         << ": "
-         << endl;
-    mReactor = reactor;
-}
-template<typename SVC_HANDLER, typename PEER_CONNECTOR>
-Reactor_1_0::Reactor* Connector<SVC_HANDLER, PEER_CONNECTOR>::getReactor() const
-{
-    cout << "Connector<SVC_HANDLER, PEER_CONNECTOR>::"
-         << __FUNCTION__
-         << ": "
-         << endl;
-    return mReactor;
-}
-
-template<typename SVC_HANDLER, typename PEER_CONNECTOR>
+template <typename SVC_HANDLER, typename PEER_CONNECTOR>
 int Connector<SVC_HANDLER, PEER_CONNECTOR>::connect( SVC_HANDLER *&svcHandler, const typename PEER_CONNECTOR::PEER_ADDR &remoteAddr, int flags )
 {
     int result = 0;
@@ -99,61 +68,46 @@ int Connector<SVC_HANDLER, PEER_CONNECTOR>::connect( SVC_HANDLER *&svcHandler, c
     {
         if ( errno == EINPROGRESS || errno == EWOULDBLOCK )
         {
-            cout << "Connector<SVC_HANDLER, PEER_CONNECTOR>::"
-                 << __FUNCTION__
-                 << ": "
-                 << "errno="
-                 << ((errno == EINPROGRESS) ? "EINPROGRESS" : "EWOULDBLOCK")
-                 << endl;
+            LOG_INFO( "errno=" << ( ( errno == EINPROGRESS ) ? "EINPROGRESS" : "EWOULDBLOCK" ) );
 
             nonblockingConnect( svcHandler );
         }
     }
     return result;
 }
-template<typename SVC_HANDLER, typename PEER_CONNECTOR>
+template <typename SVC_HANDLER, typename PEER_CONNECTOR>
 int Connector<SVC_HANDLER, PEER_CONNECTOR>::handleInput( int fd )
 {
     return 0;
 }
-template<typename SVC_HANDLER, typename PEER_CONNECTOR>
+template <typename SVC_HANDLER, typename PEER_CONNECTOR>
 int Connector<SVC_HANDLER, PEER_CONNECTOR>::handleClose( int handle )
 {
     return 0;
 }
 
-template<typename SVC_HANDLER, typename PEER_CONNECTOR>
+template <typename SVC_HANDLER, typename PEER_CONNECTOR>
 int Connector<SVC_HANDLER, PEER_CONNECTOR>::makeSvcHandler( SVC_HANDLER *&svcHandler )
 {
-    cout << "Connector<SVC_HANDLER, PEER_CONNECTOR>::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 
     if ( svcHandler == nullptr )
     {
         svcHandler = new SVC_HANDLER;
         svcHandler->setReactor( this->getReactor() );
-    }else
+    }
+    else
     {
-        cout << __FUNCTION__
-             << "svcHandler is not a null pointer, skip create svcHandler"
-             << endl;
+        LOG_INFO( "svcHandler is not a null pointer, skip create svcHandler" );
     }
 
     return 0;
 }
 
-template<typename SVC_HANDLER, typename PEER_CONNECTOR>
+template <typename SVC_HANDLER, typename PEER_CONNECTOR>
 int Connector<SVC_HANDLER, PEER_CONNECTOR>::connectSvcHandler( SVC_HANDLER *svcHandler, const typename PEER_CONNECTOR::PEER_ADDR remoteAddr, int flags )
 {
-    cout << "Connector<SVC_HANDLER, PEER_CONNECTOR>::"
-         << __FUNCTION__
-         << ": "
-         << "flag=0x"
-         << std::hex
-         << flags
-         << endl;
+    LOG_INFO( "flag=0x" << std::hex << flags );
 
     int result = 0;
 
@@ -170,14 +124,10 @@ int Connector<SVC_HANDLER, PEER_CONNECTOR>::connectSvcHandler( SVC_HANDLER *svcH
     return result;
 }
 
-template<typename SVC_HANDLER, typename PEER_CONNECTOR>
+template <typename SVC_HANDLER, typename PEER_CONNECTOR>
 int Connector<SVC_HANDLER, PEER_CONNECTOR>::activateSvcHandler( SVC_HANDLER *svcHandler )
 {
-
-    cout << "Connector<SVC_HANDLER, PEER_CONNECTOR>::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 
     int result = 0;
     if ( svcHandler == nullptr )
@@ -187,7 +137,7 @@ int Connector<SVC_HANDLER, PEER_CONNECTOR>::activateSvcHandler( SVC_HANDLER *svc
 
     if ( result != -1 )
     {
-        if ( svcHandler->open( (void*) this ) == -1 )
+        if ( svcHandler->open( (void *) this ) == -1 )
         {
             result = -1;
         }
@@ -201,13 +151,10 @@ int Connector<SVC_HANDLER, PEER_CONNECTOR>::activateSvcHandler( SVC_HANDLER *svc
     return result;
 }
 
-template<typename SVC_HANDLER, typename PEER_CONNECTOR>
+template <typename SVC_HANDLER, typename PEER_CONNECTOR>
 int Connector<SVC_HANDLER, PEER_CONNECTOR>::nonblockingConnect( SVC_HANDLER *svcHandler )
 {
-    cout << "Connector<SVC_HANDLER, PEER_CONNECTOR>::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 
     int result = -1;
     NBCH *nbch = 0;
@@ -223,13 +170,10 @@ int Connector<SVC_HANDLER, PEER_CONNECTOR>::nonblockingConnect( SVC_HANDLER *svc
     return result;
 }
 
-template<typename SVC_HANDLER, typename PEER_CONNECTOR>
+template <typename SVC_HANDLER, typename PEER_CONNECTOR>
 void Connector<SVC_HANDLER, PEER_CONNECTOR>::initializeSvcHandler( int handle, SVC_HANDLER *svc_handler )
 {
-    cout << "Connector<SVC_HANDLER, PEER_CONNECTOR>::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 
     bool result = true;
 
@@ -248,19 +192,20 @@ void Connector<SVC_HANDLER, PEER_CONNECTOR>::initializeSvcHandler( int handle, S
         if ( svc_handler->peer().getRemoteAddr( raddr ) != -1 )
         {
             activateSvcHandler( svc_handler );
-        }else // Somethings gone wrong, so close down...
+        }
+        else // Somethings gone wrong, so close down...
         {
             svc_handler->close();
         }
     }
-
 }
 
-template<typename SVC_HANDLER>
+template <typename SVC_HANDLER>
 NonBlockingConnectHandler<SVC_HANDLER>::NonBlockingConnectHandler( ConnectorBase<
-                                                                                   SVC_HANDLER> &connector, SVC_HANDLER *sh ) :
-                mConnector( connector ),
-                mSvcHandler( sh )
+                                                                       SVC_HANDLER> &connector,
+                                                                   SVC_HANDLER *sh )
+    : mConnector( connector ),
+      mSvcHandler( sh )
 {
     if ( mSvcHandler != nullptr )
     {
@@ -268,19 +213,15 @@ NonBlockingConnectHandler<SVC_HANDLER>::NonBlockingConnectHandler( ConnectorBase
     }
 }
 
-template<typename SVC_HANDLER>
+template <typename SVC_HANDLER>
 NonBlockingConnectHandler<SVC_HANDLER>::~NonBlockingConnectHandler()
 {
-
 }
-template<typename SVC_HANDLER>
+template <typename SVC_HANDLER>
 int NonBlockingConnectHandler<SVC_HANDLER>::handleOutput( int handle )
 {
     // Called when a connection is establishment asynchronous.
-    cout << "NonBlockingConnectHandler<SVC_HANDLER>::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 
     // Grab the connector ref before smashing ourselves in close().
     ConnectorBase<SVC_HANDLER> &connector = this->mConnector;
@@ -295,51 +236,39 @@ int NonBlockingConnectHandler<SVC_HANDLER>::handleOutput( int handle )
     return retval;
 }
 
-template<typename SVC_HANDLER>
+template <typename SVC_HANDLER>
 int NonBlockingConnectHandler<SVC_HANDLER>::handleInput( int handle )
 {
-    cout << "NonBlockingConnectHandler<SVC_HANDLER>::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 
     return 0;
 }
 
-template<typename SVC_HANDLER>
+template <typename SVC_HANDLER>
 int NonBlockingConnectHandler<SVC_HANDLER>::handleClose( int handle )
 {
-    cout << "NonBlockingConnectHandler<SVC_HANDLER>::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 
     return 0;
 }
 
-template<typename SVC_HANDLER>
+template <typename SVC_HANDLER>
 int NonBlockingConnectHandler<SVC_HANDLER>::handleException( int handle )
 {
-    cout << "NonBlockingConnectHandler<SVC_HANDLER>::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 
     return 0;
 }
 
-template<typename SVC_HANDLER>
-SVC_HANDLER* NonBlockingConnectHandler<SVC_HANDLER>::svcHandler()
+template <typename SVC_HANDLER>
+SVC_HANDLER *NonBlockingConnectHandler<SVC_HANDLER>::svcHandler()
 {
-    cout << "NonBlockingConnectHandler<SVC_HANDLER>::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 
     return mSvcHandler;
 }
 
-template<typename SVC_HANDLER>
+template <typename SVC_HANDLER>
 bool NonBlockingConnectHandler<SVC_HANDLER>::close( SVC_HANDLER *&sh )
 {
     bool result = true;
@@ -353,24 +282,14 @@ bool NonBlockingConnectHandler<SVC_HANDLER>::close( SVC_HANDLER *&sh )
     if ( result == true )
     {
         // Exclusive access to the Reactor.
-//        TBD , ACE_GUARD_RETURN( ACE_Lock, ace_mon, this->reactor()->lock(), 0 );
-
-// Double check.
-        if ( this->mSvcHandler == nullptr )
-        {
-            result = false;
-        }
-
         if ( result == true )
         {
             sh = this->mSvcHandler;
             this->mSvcHandler = 0;
 
             // Remove from Reactor.
-            if ( this->getReactor()->removeHandler( sh, ALL_EVENTS_MASK )
-                 == -1 )
+            if ( this->getReactor()->removeHandler( sh, ALL_EVENTS_MASK ) == -1 )
             {
-
                 result = false;
             }
             this->mSvcHandler = 0;

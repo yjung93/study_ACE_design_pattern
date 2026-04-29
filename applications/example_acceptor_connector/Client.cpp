@@ -5,11 +5,11 @@
  *      Author: yjung93
  */
 
-#include <iostream>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 
 #include "Client.hpp"
+#include "framework/common/Logger.hpp"
 
 namespace ex_acceptor_connector
 {
@@ -37,19 +37,13 @@ void Client::initialize()
     // Convert IPv4 and IPv6 addresses from text to binary form
     if ( ::inet_pton( AF_INET, "127.0.0.1", &peerAddr.sin_addr ) <= 0 )
     {
-        std::cerr << "Invalid address / Address not supported"
-                  << std::endl;
+        LOG_ERROR( "invalid address / address not supported" );
     }
 
     OutputHandler *pOutputHandler = &mOutputHandler;
     int result = mConnector.connect( pOutputHandler, peerAddr, O_NONBLOCK );
 //    int result = mConnector.connect( pOutputHandler, peerAddr, 0 );
-    cout << "Client::"
-         << __FUNCTION__
-         << ": "
-         << "connect result = "
-         << result
-         << endl;
+    LOG_INFO( "connect result=" << result );
 }
 
 void Client::finish()

@@ -1,30 +1,23 @@
-#include <iostream>
-
 #include "ActObjServantProxy.hpp"
 #include "ActObjMethodRequests.hpp"
+#include "framework/common/Logger.hpp"
 
 namespace ExActiveObject
 {
 
 ActObjServantProxy::ActObjServantProxy()
 {
-    cout << "ActObjServantProxy::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 }
 
 ActObjServantProxy::~ActObjServantProxy()
 {
-    cout << "ActObjServantProxy::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 }
 
 ActiveObject_1_0::Future<string> ActObjServantProxy::requestGetReturnMessage( const string &message )
 {
-    cout << "ActObjServantProxy::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 
     ActiveObject_1_0::Future<string> result;
     ActiveObject_1_0::MethodRequest *methodRequest = new RequestGetReturnMessage( mServant, result, message );

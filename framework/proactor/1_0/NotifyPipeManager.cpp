@@ -1,9 +1,9 @@
-
 #include <sys/socket.h>
 #include <netinet/in.h>
 
 #include "NotifyPipeManager.hpp"
 #include "Proactor.hpp"
+#include "framework/common/Logger.hpp"
 
 namespace Proactor_1_0
 {
@@ -18,14 +18,7 @@ NotifyPipeManager::NotifyPipeManager( Proactor *proactor )
         return;
     }
 
-    cout << "NotifyPipeManager::"
-         << __FUNCTION__
-         << ": "
-         << " mNotifyPipe[0]="
-         << mNotifyPipe[0]
-         << ", mNotifyPipe[1]="
-         << mNotifyPipe[1]
-         << endl;
+    LOG_INFO( "mNotifyPipe[0]=" << mNotifyPipe[0] << ", mNotifyPipe[1]=" << mNotifyPipe[1] );
 
     mProactor->setNotifyHandle( mNotifyPipe[0] );
     mReadStream.open( *this, mNotifyPipe[0], 0, mProactor );
@@ -38,19 +31,13 @@ NotifyPipeManager::~NotifyPipeManager()
 
 void NotifyPipeManager::handleReadStream( const AsynchReadStreamResult &result )
 {
-    cout << "NotifyPipeManager::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
     mReadStream.read( mNotifyBuffer, mNotifyBuffer.size() );
 }
 
 int NotifyPipeManager::notify()
 {
-    cout << "NotifyPipeManager::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 
 
     char byte = 1;

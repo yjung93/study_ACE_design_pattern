@@ -2,6 +2,7 @@
 
 #include "ActObjMethodCallback.hpp"
 #include "ActObjClient.hpp"
+#include "framework/common/Logger.hpp"
 
 namespace ExActiveObject
 {
@@ -17,11 +18,7 @@ void CallbackGetReturnMessage::update( const ActiveObject_1_0::Future<string> &f
 
     if ( rc != -1 )
     {
-        cout << "CallbackGetReturnMessage::"
-             << __FUNCTION__ << ": "
-             << "ReturnMessage="
-             << returnMessage
-             << endl;
+        LOG_INFO( "ReturnMessage=" << returnMessage );
 
         send( mParent.getHandle(), returnMessage.c_str(), returnMessage.size(), 0 );
     }

@@ -8,12 +8,10 @@
 #include "applications/example_half-sync_half-async/AsyncService.hpp"
 #include "applications/example_half-sync_half-async/Acceptor.hpp"
 #include <cstring>
-#include <iostream>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
-
-using namespace std;
+#include "framework/common/Logger.hpp"
 
 namespace ExHalfSyncAsync
 {
@@ -22,23 +20,17 @@ AsyncService::AsyncService( Reactor_1_0::Reactor *reactor, Acceptor &owner )
     : EventHandler( reactor ),
       mOwner( &owner )
 {
-    cout << "AsyncService::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 }
 
 AsyncService::~AsyncService()
 {
-    cout << "AsyncService::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 }
 
 void AsyncService::open()
 {
-    cout << "AsyncService::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
     getReactor()->registerHandler( this, EventHandler::READ_MASK );
 
     // Initialize SyncService
@@ -48,9 +40,7 @@ void AsyncService::open()
 
 int AsyncService::handleInput( int fd )
 {
-    cout << "AsyncService::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 
     const int bufferSize = 1024;
 
@@ -61,9 +51,7 @@ int AsyncService::handleInput( int fd )
     {
         if ( valread == 0 )
         {
-            cout << "Client disconnected, socket FD: "
-                 << fd
-                 << endl;
+            LOG_INFO( "client disconnected, socket FD: " << fd );
         }
         else
         {
@@ -80,9 +68,7 @@ int AsyncService::handleInput( int fd )
         return 0;
     }
 
-    cout << "Received message: "
-         << buffer
-         << endl;
+    LOG_INFO( "received message: " << buffer );
 
     mSyncService->putQ( string( buffer, static_cast<size_t>( valread ) ) );
 

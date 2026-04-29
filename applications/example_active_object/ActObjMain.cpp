@@ -2,12 +2,10 @@
 #include "applications/example_active_object/ActObjMain.hpp"
 #include "applications/example_active_object/ActObjAcceptor.hpp"
 #include <cstring>
-#include <iostream>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
-
-using namespace std;
+#include "framework/common/Logger.hpp"
 
 namespace ExActiveObject
 {
@@ -16,23 +14,17 @@ ActObjMain::ActObjMain( Reactor_1_0::Reactor *reactor, ActObjAcceptor &owner )
     : EventHandler( reactor ),
       mOwner( &owner )
 {
-    cout << "ActObjMain::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 }
 
 ActObjMain::~ActObjMain()
 {
-    cout << "ActObjMain::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 }
 
 void ActObjMain::open()
 {
-    cout << "ActObjMain::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
     getReactor()->registerHandler( this, EventHandler::READ_MASK );
 
     // Initialize ActObjClient
@@ -42,9 +34,7 @@ void ActObjMain::open()
 
 int ActObjMain::handleInput( int fd )
 {
-    cout << "ActObjMain::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 
     const int bufferSize = 1024;
 
@@ -55,9 +45,7 @@ int ActObjMain::handleInput( int fd )
     {
         if ( valread == 0 )
         {
-            cout << "Client disconnected, socket FD: "
-                 << fd
-                 << endl;
+            LOG_INFO( "client disconnected, socket FD: " << fd );
         }
         else
         {
@@ -74,9 +62,7 @@ int ActObjMain::handleInput( int fd )
         return 0;
     }
 
-    cout << "Received message: "
-         << buffer
-         << endl;
+    LOG_INFO( "received message: " << buffer );
 
     mActObjClient->putQ( string( buffer, static_cast<size_t>( valread ) ) );
 

@@ -1,33 +1,25 @@
 
 #include "ActObjScheduler.hpp"
-#include <iostream>
 #include <sys/socket.h>
-
-using namespace std;
+#include "framework/common/Logger.hpp"
 
 namespace ExActiveObject
 {
 
 ActObjScheduler::ActObjScheduler()
 {
-    cout << "ActObjScheduler::"
-         << __FUNCTION__
-         << endl;
-         
+    LOG_INFO( "called" );
+
     activate();
 }
 ActObjScheduler::~ActObjScheduler()
 {
-    cout << "ActObjScheduler::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 }
 
 int ActObjScheduler::svc()
 {
-    cout << "ActObjScheduler::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 
     while ( true )
     {
@@ -51,9 +43,7 @@ int ActObjScheduler::svc()
 
 int ActObjScheduler::enqueue( ActiveObject_1_0::MethodRequest *request )
 {
-    cout << "ActObjScheduler::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 
     return mActivationQueue.enqueue( request );
 }

@@ -1,10 +1,10 @@
 #include <string>
-#include <iostream>
 #include <thread>
 
 #include "Proactor.hpp"
 #include "AsynchResult.hpp"
 #include "NotifyPipeManager.hpp"
+#include "framework/common/Logger.hpp"
 
 #include "framework/reactor/1_0/EventHandler.hpp"
 
@@ -30,10 +30,7 @@ Proactor::Proactor()
 
 Proactor::~Proactor()
 {
-    cout << "Proactor::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 
     if ( mAiocbNotifyPipeManager != nullptr )
     {
@@ -121,12 +118,7 @@ int Proactor::deleteResultAiocbList()
     // We know that we have memory leaks, but it is better than
     // segmentation fault!
 
-    cout << "Proactor::"
-         << __FUNCTION__
-         << ": "
-         << "number pending AIO="
-         << num_pending
-         << endl;
+    LOG_INFO( "number pending AIO=" << num_pending );
 
     delete[] mAiocbList;
     mAiocbList = 0;
@@ -152,11 +144,7 @@ ssize_t Proactor::allocateAioSlot( AsynchResult *result )
         { // is allowed
             errno = EAGAIN;
 
-            cout << "Proactor::"
-                 << __FUNCTION__
-                 << ": "
-                 << "internal Proactor error 0"
-                 << endl;
+            LOG_ERROR( "internal Proactor error 0" );
         }
     }
     else //try to find free slot as usual, but starting from 1
@@ -168,11 +156,7 @@ ssize_t Proactor::allocateAioSlot( AsynchResult *result )
 
     if ( i >= mAiocbListMaxSize )
     {
-        cout << "Proactor::"
-             << __FUNCTION__
-             << ": "
-             << "internal Proactor error 1"
-             << endl;
+        LOG_ERROR( "internal Proactor error 1" );
     }
 
     //setup OS notification methods for this aio
@@ -186,19 +170,12 @@ int Proactor::startAio( AsynchResult *result,
 {
     lock_guard<recursive_mutex> guard( mRecursiveMutex );
 
-    cout << "Proactor::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 
     int returnValue = -1;
     if ( result == 0 ) // Just check the status of the list
     {
-        cout << "Proactor::"
-             << __FUNCTION__
-             << ": "
-             << "invalid result object, nullptr"
-             << endl;
+        LOG_ERROR( "invalid result object, nullptr" );
         return returnValue;
     }
     // Save operation code in the aiocb
@@ -213,12 +190,7 @@ int Proactor::startAio( AsynchResult *result,
             break;
 
         default:
-            cout << "Proactor::"
-                 << __FUNCTION__
-                 << ": "
-                 << " Invalid op code="
-                 << op
-                 << endl;
+            LOG_ERROR( "Invalid op code=" << op );
     }
 
     ssize_t slot = allocateAioSlot( result );
@@ -255,16 +227,9 @@ int Proactor::startAio( AsynchResult *result,
         mAiocbListCurSize--;
     }
 
-    cout << "Proactor::"
-         << __FUNCTION__
-         << ": "
-         << " slot="
-         << slot
-         << " AiocbListCurSize="
-         << mAiocbListCurSize
-         << " return value="
-         << returnValue
-         << endl;
+    LOG_INFO( "slot=" << slot
+              << " AiocbListCurSize=" << mAiocbListCurSize
+              << " return value=" << returnValue );
 
     return returnValue;
 }
@@ -302,48 +267,24 @@ int Proactor::startAioI( AsynchResult *result )
     {
         if ( errno == EAGAIN || errno == ENOMEM ) //Ok, it will be deferred AIO
         {
-            cout << "Proactor::"
-                 << __FUNCTION__
-                 << ": "
-                 << pPype
-                 << " errno="
-                 << errno
-                 << " it will be deferred AIO"
-                 << endl;
+            LOG_INFO( pPype << " errno=" << errno << " it will be deferred AIO" );
 
             returnValue = 1;
         }
         else
         {
-            cout << "Proactor::"
-                 << __FUNCTION__
-                 << ": "
-                 << pPype
-                 << " queueing failed"
-                 << endl;
+            LOG_ERROR( pPype << " queueing failed" );
         }
     }
 
-    cout << "Proactor::"
-         << __FUNCTION__
-         << ": "
-         << " aio_fildes="
-         << aio_ptr->aio_fildes
-         << " aio_nbytes="
-         << aio_ptr->aio_nbytes
-         << " aio_offset="
-         << aio_ptr->aio_offset
-         << " aio_sigevent.sigev_signo="
-         << aio_ptr->aio_sigevent.sigev_signo
-         << " aio_sigevent.sigev_notify="
-         << aio_ptr->aio_sigevent.sigev_notify
-         << " pPype="
-         << pPype
-         << " NumStartedAio"
-         << mNumStartedAio
-         << " return value="
-         << returnValue
-         << endl;
+    LOG_INFO( "aio_fildes=" << aio_ptr->aio_fildes
+              << " aio_nbytes=" << aio_ptr->aio_nbytes
+              << " aio_offset=" << aio_ptr->aio_offset
+              << " aio_sigevent.sigev_signo=" << aio_ptr->aio_sigevent.sigev_signo
+              << " aio_sigevent.sigev_notify=" << aio_ptr->aio_sigevent.sigev_notify
+              << " pPype=" << pPype
+              << " NumStartedAio=" << mNumStartedAio
+              << " return value=" << returnValue );
 
     return returnValue;
 }
@@ -351,10 +292,7 @@ int Proactor::startAioI( AsynchResult *result )
 int Proactor::cancelAio( int handle )
 {
     lock_guard<recursive_mutex> guard( mRecursiveMutex );
-    cout << "Proactor::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 
     return 0;
 }
@@ -389,27 +327,15 @@ int Proactor::handleEvents()
         }
     }
 
-    cout << "Proactor::"
-         << __FUNCTION__
-         << ": mAiocbList.size="
-         << mAiocbListMaxSize
-         << endl;
+    LOG_INFO( "mAiocbList.size=" << mAiocbListMaxSize );
 
-    cout << "Proactor::"
-         << __FUNCTION__
-         << ": activeList.size="
-         << activeList.size()
-         << endl;
+    LOG_INFO( "activeList.size=" << activeList.size() );
 
     resultSuspend = aio_suspend( activeList.data(),
                                  activeList.size(),
                                  0 );
 
-    cout << "Proactor::"
-         << __FUNCTION__
-         << ": aio_suspend, resultSuspend="
-         << resultSuspend
-         << endl;
+    LOG_INFO( "aio_suspend, resultSuspend=" << resultSuspend );
 
     // Check for errors
     if ( resultSuspend == -1 )
@@ -417,11 +343,7 @@ int Proactor::handleEvents()
         if ( errno != EAGAIN && // Timeout
              errno != EINTR ) // Interrupted call
         {
-            cout << "Proactor::"
-                 << __FUNCTION__
-                 << ": "
-                 << " aio_suspend Failed"
-                 << endl;
+            LOG_ERROR( "aio_suspend Failed" );
         }
 
         // let continue work
@@ -496,35 +418,19 @@ AsynchResult *Proactor::findCompletedAio( int &errorStatus,
 
     if ( count == 0 ) // all processed , nothing found
     {
-        cout << "Proactor::"
-             << __FUNCTION__
-             << ": "
-             << "all processed , nothing found."
-             << " transferCount="
-             << transferCount
-             << " index="
-             << index
-             << " count="
-             << count
-             << " mAiocbListMaxSize="
-             << mAiocbListMaxSize
-             << endl;
+        LOG_INFO( "all processed, nothing found."
+                  << " transferCount=" << transferCount
+                  << " index=" << index
+                  << " count=" << count
+                  << " mAiocbListMaxSize=" << mAiocbListMaxSize );
         return 0;
     }
 
-    cout << "Proactor::"
-         << __FUNCTION__
-         << ": "
-         << "found completed ."
-         << " transferCount="
-         << transferCount
-         << " index="
-         << index
-         << " count="
-         << count
-         << " mAiocbListMaxSize="
-         << mAiocbListMaxSize
-         << endl;
+    LOG_INFO( "found completed."
+              << " transferCount=" << transferCount
+              << " index=" << index
+              << " count=" << count
+              << " mAiocbListMaxSize=" << mAiocbListMaxSize );
 
     AsynchResult = mResultList[index];
 
@@ -545,20 +451,11 @@ int Proactor::getResultStatus( AsynchResult *asynchResult,
                                int &errorStatus,
                                size_t &transferCount )
 {
-    cout << "Proactor::"
-         << __FUNCTION__
-         << ": "
-         << " aio_fildes="
-         << asynchResult->aio_fildes
-         << " aio_nbytes="
-         << asynchResult->aio_nbytes
-         << " aio_offset="
-         << asynchResult->aio_offset
-         << " aio_sigevent.sigev_signo="
-         << asynchResult->aio_sigevent.sigev_signo
-         << " aio_sigevent.sigev_notify="
-         << asynchResult->aio_sigevent.sigev_notify
-         << endl;
+    LOG_INFO( "aio_fildes=" << asynchResult->aio_fildes
+              << " aio_nbytes=" << asynchResult->aio_nbytes
+              << " aio_offset=" << asynchResult->aio_offset
+              << " aio_sigevent.sigev_signo=" << asynchResult->aio_sigevent.sigev_signo
+              << " aio_sigevent.sigev_notify=" << asynchResult->aio_sigevent.sigev_notify );
 
     transferCount = 0;
 
@@ -569,12 +466,7 @@ int Proactor::getResultStatus( AsynchResult *asynchResult,
     errorStatus = aio_error( aio_ptr );
     if ( errorStatus == EINPROGRESS )
     {
-        cout << "Proactor::"
-             << __FUNCTION__
-             << ": "
-             << "errorStatus="
-             << errorStatus
-             << endl;
+        LOG_INFO( "errorStatus=" << errorStatus );
         return 0; // not completed
     }
 
@@ -601,12 +493,7 @@ int Proactor::startDeferredAio()
     {
         return 0; //  nothing to do
     }
-    cout << "Proactor::"
-         << __FUNCTION__
-         << ": "
-         << " NumDeferredAiocb="
-         << mNumDeferredAiocb
-         << endl;
+    LOG_INFO( "NumDeferredAiocb=" << mNumDeferredAiocb );
 
     size_t i = 0;
 
@@ -621,20 +508,9 @@ int Proactor::startDeferredAio()
 
     if ( i >= mAiocbListMaxSize )
     {
-        cout << "Proactor::"
-             << __FUNCTION__
-             << ": "
-             << "internal Proactor error 3\n"
-             << endl;
+        LOG_ERROR( "internal Proactor error 3" );
 
-        cout << "Proactor::"
-             << __FUNCTION__
-             << ": "
-             << " i="
-             << i
-             << ", mAiocbListMaxSize="
-             << mAiocbListMaxSize
-             << endl;
+        LOG_ERROR( "i=" << i << ", mAiocbListMaxSize=" << mAiocbListMaxSize );
     }
 
     AsynchResult *result = mResultList[i];
@@ -708,10 +584,7 @@ void Proactor::applicationSpecificCode( AsynchResult *asynchResult,
 
 int Proactor::proactorRunEventLoop()
 {
-    cout << "Proactor::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 
     int result = 0;
 
@@ -794,29 +667,19 @@ void Proactor::createNotifyManager()
 {
     if ( mAiocbNotifyPipeManager == nullptr )
     {
-        cout << "Proactor::"
-             << __FUNCTION__
-             << ": "
-             << endl;
+        LOG_INFO( "called" );
 
         mAiocbNotifyPipeManager = new NotifyPipeManager( this );
     }
     else
     {
-        cout << "Proactor::"
-             << __FUNCTION__
-             << ": "
-             << "something wrong"
-             << endl;
+        LOG_ERROR( "something wrong" );
     }
 }
 
 int Proactor::notifyCompletion()
 {
-    cout << "Proactor::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 
     int rc = -1;
 
@@ -826,23 +689,14 @@ int Proactor::notifyCompletion()
     }
     else
     {
-        cout << "Proactor::"
-             << __FUNCTION__
-             << ": "
-             << "mAiocbNotifyPipeManager : nullptr"
-             << endl;
+        LOG_ERROR( "mAiocbNotifyPipeManager: nullptr" );
     }
     return rc;
 }
 
 void Proactor::setNotifyHandle( int handle )
 {
-    cout << "Proactor::"
-         << __FUNCTION__
-         << ": "
-         << "handle="
-         << handle
-         << endl;
+    LOG_INFO( "handle=" << handle );
     mNotifyPipeReadHandle = handle;
 }
 

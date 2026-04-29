@@ -1,4 +1,5 @@
 #include "AsynchReadStream.hpp"
+#include "framework/common/Logger.hpp"
 
 namespace Proactor_1_0
 {
@@ -31,20 +32,11 @@ AsynchReadStreamResult::AsynchReadStreamResult( const Handler::ProxyPtr &handler
         this->aio_buf = nullptr;
     }
 
-    cout << "AsynchResult::"
-         << __FUNCTION__
-         << ": "
-         << " aio_fildes="
-         << aio_fildes
-         << " aio_nbytes="
-         << aio_nbytes
-         << " aio_offset="
-         << aio_offset
-         << " aio_sigevent.sigev_signo="
-         << aio_sigevent.sigev_signo
-         << " aio_sigevent.sigev_notify="
-         << aio_sigevent.sigev_notify
-         << endl;
+    LOG_INFO( "aio_fildes=" << aio_fildes
+              << " aio_nbytes=" << aio_nbytes
+              << " aio_offset=" << aio_offset
+              << " aio_sigevent.sigev_signo=" << aio_sigevent.sigev_signo
+              << " aio_sigevent.sigev_notify=" << aio_sigevent.sigev_notify );
 }
 
 AsynchReadStreamResult::~AsynchReadStreamResult()
@@ -104,10 +96,7 @@ int AsynchReadStream::read( vector<uint8_t> &message,
                             int priority,
                             int signal_number )
 {
-    cout << "AsynchReadStream::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 
     if ( bytesToRead == 0 )
     {
@@ -128,12 +117,7 @@ int AsynchReadStream::read( vector<uint8_t> &message,
 
     int return_val = proactor->startAio( result, Proactor::OPCODE_READ );
 
-    cout << "AsynchReadStream::"
-         << __FUNCTION__
-         << ": "
-         << "return_val="
-         << return_val
-         << endl;
+    LOG_INFO( "return_val=" << return_val );
 
     if ( return_val == -1 )
     {
@@ -148,10 +132,7 @@ int AsynchReadStream::open( Handler &handler,
                             const void *completionKey,
                             Proactor *proactor )
 {
-    cout << "AsynchReadStream::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 
     mProactor = proactor;
     mhandlerProxy = handler.proxy();

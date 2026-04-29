@@ -6,15 +6,13 @@
  */
 
 #include <cstring>
-#include <iostream>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
 
 #include "ServerEventHandler.hpp"
 #include "Acceptor.hpp"
-
-using namespace std;
+#include "framework/common/Logger.hpp"
 
 namespace example_proactor
 {
@@ -25,26 +23,19 @@ ServerEventHandler::ServerEventHandler( Acceptor &owner )
       mMessageWrite( 0 )
 
 {
-    cout << "ServerEventHandler::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 }
 
 ServerEventHandler::~ServerEventHandler()
 {
-    cout << "ServerEventHandler::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 
     close( handle() );
 }
 
 void ServerEventHandler::open( int new_handle )
 {
-    cout << "ServerEventHandler::"
-         << __FUNCTION__
-         << ": "
-         << endl;
+    LOG_INFO( "called" );
 
     mReader.open( *this, new_handle, 0, proactor() );
     mWriter.open( *this, new_handle, 0, proactor() );
@@ -61,20 +52,13 @@ void ServerEventHandler::handleReadStream( const Proactor_1_0::AsynchReadStreamR
     else if ( result.bytes_transferred() > 0 )
     {
         string messageReceived( result.message().begin(), result.message().begin() + result.bytes_transferred() );
-        cout << "ServerEventHandler::"
-             << __FUNCTION__
-             << ": "
-             << "received="
-             << messageReceived
-             << endl;
+        LOG_INFO( "received=" << messageReceived );
 
         string messageToSend = "Echo - " + string( messageReceived );
         mMessageWrite.assign( messageToSend.begin(), messageToSend.end() );
         mWriter.write( mMessageWrite, mMessageWrite.size() );
 
-        cout << "Replied message: "
-             << messageToSend
-             << endl;
+        LOG_INFO( "replied message: " << messageToSend );
 
         mReader.read( mMessageRead, mMessageRead.size() );
     }
@@ -84,21 +68,12 @@ void ServerEventHandler::handleWriteStream( const Proactor_1_0::AsynchWriteStrea
 {
     if ( result.success() != true || result.bytes_transferred() == 0 )
     {
-        cout << "ServerEventHandler::"
-             << __FUNCTION__
-             << ": "
-             << "fail to send"
-             << endl;
+        LOG_ERROR( "fail to send" );
     }
     else if ( result.bytes_transferred() > 0 )
     {
         string messageReceived( result.message().begin(), result.message().begin() + result.bytes_transferred() );
-        cout << "ServerEventHandler::"
-             << __FUNCTION__
-             << ": "
-             << "sent="
-             << messageReceived
-             << endl;
+        LOG_INFO( "sent=" << messageReceived );
     }
 }
 } /* namespace example_proactor */

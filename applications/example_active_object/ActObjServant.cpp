@@ -1,38 +1,26 @@
 
 #include "ActObjServant.hpp"
-#include <iostream>
 #include <sys/socket.h>
 #include <chrono>
 #include <thread>
-
-using namespace std;
+#include "framework/common/Logger.hpp"
 
 namespace ExActiveObject
 {
 ActObjServant::ActObjServant()
 {
-    cout << "ActObjServant::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 }
 
 string ActObjServant::RequestGetReturnMessage( const string &message )
 {
-    cout << "ActObjServant::"
-         << __FUNCTION__ << ": "
-         << " message= "
-         << message
-         << endl;
+    LOG_INFO( "message=" << message );
 
     string result = "Echo - " + message;
 
     this_thread::sleep_for( std::chrono::milliseconds( 1000 ) ); // simulate work load
 
-    cout << "ActObjServant::"
-         << __FUNCTION__ << ": "
-         << "process completed, result= "
-         << result
-         << endl;
+    LOG_INFO( "process completed, result=" << result );
 
     return result;
 }

@@ -6,25 +6,21 @@
  */
 
 #include "applications/example_proactor/Acceptor.hpp"
-#include <iostream>
 #include <thread>
 
 #include "framework/reactor/1_0/Reactor.hpp"
-
-using namespace std;
+#include "framework/common/Logger.hpp"
 
 void reactorThreadFuncion( Reactor_1_0::Reactor *reactor )
 {
-    cout << "reactorThreadFuncion"
-         << endl;
+    LOG_INFO( "called" );
 
     reactor->runReactorEventLoop();
 }
 
 void proactorThreadFuncion( Proactor_1_0::Proactor *proactor )
 {
-    cout << "proactorThreadFuncion"
-         << endl;
+    LOG_INFO( "called" );
 
     proactor->proactorRunEventLoop();
 }

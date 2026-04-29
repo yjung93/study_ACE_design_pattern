@@ -1,17 +1,15 @@
 #include <applications/example_acceptor_connector/ConnectorImpl.hpp>
-#include <iostream>
 #include <thread>
 
 #include "framework/reactor/1_0/Reactor.hpp"
 #include "applications/example_acceptor_connector/Client.hpp"
+#include "framework/common/Logger.hpp"
 
-using namespace std;
 using namespace ex_acceptor_connector;
 
 void clientThreadFuncion( Reactor_1_0::Reactor *reactor )
 {
-    cout << "clientThreadFuncion"
-         << endl;
+    LOG_INFO( "called" );
 
     reactor->runReactorEventLoop();
 }

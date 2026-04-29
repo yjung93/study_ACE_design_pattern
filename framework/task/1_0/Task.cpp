@@ -5,11 +5,9 @@
  *      Author: yjung93
  */
 
-#include <iostream>
 #include <system_error>
+#include "framework/common/Logger.hpp"
 #include "Task.hpp"
-
-using namespace std;
 
 namespace Task_1_0
 {
@@ -17,16 +15,12 @@ namespace Task_1_0
 Task::Task()
     : mStopRequested( false )
 {
-    cout << "Task::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
 }
 
 Task::~Task()
 {
-    cout << "Task::"
-         << __FUNCTION__
-         << endl;
+    LOG_INFO( "called" );
     {
         lock_guard<mutex> guard( mQueueMutex );
         mStopRequested = true;
@@ -41,11 +35,7 @@ Task::~Task()
 }
 int Task::open( void *args )
 {
-    cout << "Task::"
-         << __FUNCTION__
-         << ": "
-         << "Default open implementation. Override in derived class."
-         << endl;
+    LOG_INFO( "Default open implementation. Override in derived class." );
     return 0;
 }
 
@@ -62,7 +52,7 @@ int Task::activate()
     }
     catch ( const system_error &ex )
     {
-        cerr << "Task::activate failed: " << ex.what() << endl;
+        LOG_ERROR( "Task::activate failed: " << ex.what() );
         return -1;
     }
 
@@ -73,13 +63,7 @@ int Task::putQ( const string &message )
 {
     thread::id this_id = this_thread::get_id();
 
-    cout << "Task::"
-         << __FUNCTION__
-         << " threadId="
-         << this_id
-         << ": message="
-         << message
-         << endl;
+    LOG_INFO( "threadId=" << this_id << " message=" << message );
 
     lock_guard<mutex> guard( mQueueMutex );
 
@@ -113,13 +97,7 @@ int Task::getQ( string &message )
         message = mMessageQueue.front();
 
         thread::id this_id = this_thread::get_id();
-        cout << "Task::"
-             << __FUNCTION__
-             << " threadId="
-             << this_id
-             << ": message="
-             << message
-             << endl;
+        LOG_INFO( "threadId=" << this_id << " message=" << message );
 
         mMessageQueue.erase( mMessageQueue.begin() );
     }
@@ -136,11 +114,7 @@ int Task::svcRun()
 
 int Task::svc()
 {
-    cout << "Task::"
-         << __FUNCTION__
-         << ": "
-         << "Default svc implementation. Override in derived class."
-         << endl;
+    LOG_INFO( "Default svc implementation. Override in derived class." );
     return 0;
 }
 } // namespace Task_1_0

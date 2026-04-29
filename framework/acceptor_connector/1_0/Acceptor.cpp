@@ -192,7 +192,6 @@ int Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::acceptSvcHandler( SVC_HANDLER *svcHand
         << "svchandle = "
         << svchandle
         << endl;
-//        svcHandler->setHandle( svchandle );
     }
     return result;
 }
@@ -241,4 +240,4 @@ PEER_ACCEPTOR& Acceptor<SVC_HANDLER, PEER_ACCEPTOR>::acceptor() const
 }
 } /* namespace AcceptorConnector_1_0 */
 
-#endif /* FRAMEWORK_ACCEPTOR_CONNECTOR_1_0_ACCEPTOR_HPP_ */
+#endif /* FRAMEWORK_ACCEPTOR_CONNECTOR_1_0_ACCEPTOR_CPP_ */

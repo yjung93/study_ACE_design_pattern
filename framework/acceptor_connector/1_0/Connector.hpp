@@ -17,32 +17,22 @@ using namespace std;
 namespace AcceptorConnector_1_0
 {
 
-/**
- * @class ACE_Connector_Base
- *
- * @brief This base interface allows ACE_NonBlocking_Connect_Handler
- * to only care about the SVC_HANDLER template parameter of the
- * ACE_Connector.  Otherwise, ACE_NonBlocking_Connect_Handler would
- * have to be configured with all the template parameters that
- * ACE_Connector is configured with.
- */
-template<class SVC_HANDLER>
+template <class SVC_HANDLER>
 class ConnectorBase
 {
-public:
+  public:
     virtual ~ConnectorBase() = default;
 
     /// Initialize the Svc_Handler.
     virtual void initializeSvcHandler( int handle, SVC_HANDLER *svc_handler ) = 0;
-
 };
 
-template<class SVC_HANDLER>
-class NonBlockingConnectHandler: public Reactor_1_0::EventHandler
+template <class SVC_HANDLER>
+class NonBlockingConnectHandler : public Reactor_1_0::EventHandler
 {
-public:
+  public:
     /// Constructor.
-    NonBlockingConnectHandler( ConnectorBase<SVC_HANDLER> &connector, SVC_HANDLER* sh );
+    NonBlockingConnectHandler( ConnectorBase<SVC_HANDLER> &connector, SVC_HANDLER *sh );
 
     /// Destructor.
     ~NonBlockingConnectHandler();
@@ -50,7 +40,7 @@ public:
     bool close( SVC_HANDLER *&sh );
 
     /// Get SVC_HANDLER.
-    SVC_HANDLER* svcHandler();
+    SVC_HANDLER *svcHandler();
 
     /// Called by ACE_Reactor when asynchronous connections fail.
     virtual int handleInput( int handle );
@@ -65,26 +55,22 @@ public:
     /// some platforms only).
     virtual int handleException( int handle );
 
-private:
-
-
+  private:
     ConnectorBase<SVC_HANDLER> &mConnector;
 
     /// Associated SVC_HANDLER.
     SVC_HANDLER *mSvcHandler;
-
 };
 
-template<typename SVC_HANDLER, typename PEER_CONNECTOR>
-class Connector: public ConnectorBase<SVC_HANDLER>, public Reactor_1_0::EventHandler
+template <typename SVC_HANDLER, typename PEER_CONNECTOR>
+class Connector : public ConnectorBase<SVC_HANDLER>, public Reactor_1_0::EventHandler
 {
-public:
+  public:
     typedef typename SVC_HANDLER::AddrType AddrType;
     typedef PEER_CONNECTOR ConnectorType;
     typedef SVC_HANDLER HandlerType;
     typedef typename SVC_HANDLER::StreamType streamType;
     typedef typename PEER_CONNECTOR::PEER_ADDR PeerAddrType;
-    typedef typename PEER_CONNECTOR::PEER_ADDR PEER_ADDR_TYPEDEF;
     typedef NonBlockingConnectHandler<SVC_HANDLER> NBCH;
 
     Connector( Reactor_1_0::Reactor *reactor = 0, int flags = 0 );
@@ -93,31 +79,23 @@ public:
     virtual int open( Reactor_1_0::Reactor *reactor = Reactor_1_0::Reactor::getInstance(), int flags = 0 );
     bool close( SVC_HANDLER *&sh );
 
-    /// Set Reactor.
-    virtual void setReactor( Reactor_1_0::Reactor *reactor );
-
-    /// Get Reactor.
-    virtual Reactor_1_0::Reactor* getReactor() const;
-
-    virtual int connect( SVC_HANDLER *&svcHandler, const typename PEER_CONNECTOR::PEER_ADDR &remoteAddr, int flags =
-                    0 );
+    virtual int connect( SVC_HANDLER *&svcHandler, const typename PEER_CONNECTOR::PEER_ADDR &remoteAddr, int flags = 0 );
 
     void initializeSvcHandler( int handle, SVC_HANDLER *svc_handler ) override;
 
-protected:
+  protected:
     virtual int makeSvcHandler( SVC_HANDLER *&svcHandler );
-    virtual int connectSvcHandler( SVC_HANDLER *svcHandler, const typename PEER_CONNECTOR::PEER_ADDR remoteAddr, int flags =
-                    0 );
+    virtual int connectSvcHandler( SVC_HANDLER *svcHandler, const typename PEER_CONNECTOR::PEER_ADDR remoteAddr, int flags = 0 );
     virtual int activateSvcHandler( SVC_HANDLER *svcHandler );
 
-    int nonblockingConnect( SVC_HANDLER* );
+    int nonblockingConnect( SVC_HANDLER * );
 
     int handleInput( int fd = INVALID_HANDLE ) override;
     int handleClose( int handle = INVALID_HANDLE ) override;
 
-private:
+  private:
     PEER_CONNECTOR mConnector;
-    Reactor_1_0::Reactor *mReactor;
+
     int mFlags;
 };
 
