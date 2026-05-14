@@ -20,6 +20,9 @@ set (framework_v_1_1_lib
      framework/v_1_1/SockAcceptor.cpp 
      framework/v_1_1/SockConnector.cpp 
      framework/v_1_1/SockStream.cpp )
+
+set (lib_framework_common_lib 
+     framework/common/ErrnoGuard.cpp )
      
 set (lib_framework_reactor_1_0
      framework/reactor/1_0/EventHandler.cpp 
@@ -115,12 +118,14 @@ add_executable(example_reactor_server
  
 add_executable(ex_acc_con_client_1
   ${ex_acc_con_client_lib}
+  ${lib_framework_common_lib}
   ${lib_framework_acceptor_connector_1_0}
   ${lib_framework_reactor_1_0}
 )
 
 add_executable(ex_acc_con_server_1
   ${ex_acc_con_server_lib}
+  ${lib_framework_common_lib}
   ${lib_framework_acceptor_connector_1_0}
   ${lib_framework_reactor_1_0}
 )

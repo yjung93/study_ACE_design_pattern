@@ -31,6 +31,7 @@ public:
     ssize_t send_n( const void *buf, size_t size, int flags );
     int close_reader();
     int close_writer();
+    int close();
     int open( int type, int protocolFamily, int protocol, int reuseAddr );
     int enable( int value );
     int disable( int value );

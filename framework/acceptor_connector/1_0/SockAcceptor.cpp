@@ -13,8 +13,6 @@
 namespace AcceptorConnector_1_0
 {
 
-
-
 SockAcceptor::SockAcceptor()
     : mHandle( 0 )
 {
@@ -78,8 +76,10 @@ int SockAcceptor::open( PEER_ADDR peerAddr )
     {
         setHandle( acceptorFd );
 
-        LOG_INFO( "server listening on port " << ntohs( mAddress.sin_port )
-                  << " acceptorFd=" << acceptorFd );
+        LOG_INFO( "server listening on port "
+                  << ntohs( mAddress.sin_port )
+                  << " acceptorFd="
+                  << acceptorFd );
     }
 
     return result;

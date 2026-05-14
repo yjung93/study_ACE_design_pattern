@@ -12,16 +12,13 @@
 namespace AcceptorConnector_1_0
 {
 
-SockStream::SockStream() :
-                mHandle( INVALID_HANDLE )
+SockStream::SockStream()
+    : mHandle( INVALID_HANDLE )
 {
-    // TODO Auto-generated constructor stub
-
 }
 
 SockStream::~SockStream()
 {
-    // TODO Auto-generated destructor stub
 }
 
 void SockStream::setHandle( int handle )
@@ -52,9 +49,14 @@ int SockStream::close_writer()
     return ::shutdown( getHandle(), SHUT_WR );
 }
 
+int SockStream::close()
+{
+    close_writer();
+    return ::close( this->getHandle() );
+}
+
 int SockStream::open( int type, int protocolFamily, int protocol, int reuseAddr )
 {
-
     int result = 0;
 
     setHandle( ::socket( protocolFamily, type, protocol ) );
@@ -84,7 +86,7 @@ int SockStream::enable( int value )
 
         flags |= O_NONBLOCK;
 
-        if ( (result != -1 && ::fcntl( this->getHandle(), F_SETFL, flags ) < 0) )
+        if ( ( result != -1 && ::fcntl( this->getHandle(), F_SETFL, flags ) < 0 ) )
         {
             std::perror( "fcntl(F_SETFL)" );
             ::close( this->getHandle() );
@@ -92,8 +94,11 @@ int SockStream::enable( int value )
         }
     }
 
-    LOG_INFO( "value=0x" << std::hex << value
-              << ", fcntl-value=0x" << std::hex << ::fcntl( this->getHandle(), F_GETFL, 0 ) );
+    LOG_INFO( "value=0x"
+              << std::hex << value
+              << ", fcntl-value=0x"
+              << std::hex
+              << ::fcntl( this->getHandle(), F_GETFL, 0 ) );
 
     return result;
 }
@@ -111,18 +116,22 @@ int SockStream::disable( int value )
             result = -1;
         }
 
-        flags &= ~(O_NONBLOCK);
+        flags &= ~( O_NONBLOCK );
 
-        if ( (result != -1 && fcntl( this->getHandle(), F_SETFL, flags ) < 0) )
+        if ( ( result != -1 && fcntl( this->getHandle(), F_SETFL, flags ) < 0 ) )
         {
             std::perror( "fcntl(F_SETFL)" );
             ::close( this->getHandle() );
             result = -1;
         }
-
     }
-    LOG_INFO( "value=0x" << std::hex << value
-              << ", fcntl-value=0x" << std::hex << ::fcntl( this->getHandle(), F_GETFL, 0 ) );
+
+    LOG_INFO( "value=0x"
+              << std::hex
+              << value
+              << ", fcntl-value=0x"
+              << std::hex
+              << ::fcntl( this->getHandle(), F_GETFL, 0 ) );
 
     return result;
 }
@@ -132,8 +141,8 @@ int SockStream::getRemoteAddr( sockaddr_in &socketAddr ) const
     LOG_INFO( "called" );
 
     int result = 0;
-    socklen_t peerLen = sizeof(socketAddr);
-    sockaddr *addr = reinterpret_cast<sockaddr*>( &socketAddr );
+    socklen_t peerLen = sizeof( socketAddr );
+    sockaddr *addr = reinterpret_cast<sockaddr *>( &socketAddr );
 
     if ( ::getpeername( this->getHandle(), addr, &peerLen ) == -1 )
     {

@@ -69,7 +69,7 @@ class Connector : public ConnectorBase<SVC_HANDLER>, public Reactor_1_0::EventHa
     typedef typename SVC_HANDLER::AddrType AddrType;
     typedef PEER_CONNECTOR ConnectorType;
     typedef SVC_HANDLER HandlerType;
-    typedef typename SVC_HANDLER::StreamType streamType;
+    typedef typename SVC_HANDLER::StreamType StreamType;
     typedef typename PEER_CONNECTOR::PEER_ADDR PeerAddrType;
     typedef NonBlockingConnectHandler<SVC_HANDLER> NBCH;
 
@@ -79,13 +79,13 @@ class Connector : public ConnectorBase<SVC_HANDLER>, public Reactor_1_0::EventHa
     virtual int open( Reactor_1_0::Reactor *reactor = Reactor_1_0::Reactor::getInstance(), int flags = 0 );
     bool close( SVC_HANDLER *&sh );
 
-    virtual int connect( SVC_HANDLER *&svcHandler, const typename PEER_CONNECTOR::PEER_ADDR &remoteAddr, int flags = 0 );
+    virtual int connect( SVC_HANDLER *&svcHandler, const typename PEER_CONNECTOR::PEER_ADDR &remoteAddr, const timeval *timeOut = 0, int flags = 0 );
 
     void initializeSvcHandler( int handle, SVC_HANDLER *svc_handler ) override;
 
   protected:
     virtual int makeSvcHandler( SVC_HANDLER *&svcHandler );
-    virtual int connectSvcHandler( SVC_HANDLER *svcHandler, const typename PEER_CONNECTOR::PEER_ADDR remoteAddr, int flags = 0 );
+    virtual int connectSvcHandler( SVC_HANDLER *svcHandler, const typename PEER_CONNECTOR::PEER_ADDR remoteAddr, const timeval *timeOut = 0, int flags = 0 );
     virtual int activateSvcHandler( SVC_HANDLER *svcHandler );
 
     int nonblockingConnect( SVC_HANDLER * );

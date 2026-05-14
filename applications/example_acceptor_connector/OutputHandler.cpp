@@ -8,7 +8,6 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
-#include <sys/socket.h>
 #include "OutputHandler.hpp"
 #include "framework/reactor/1_0/Reactor.hpp"
 #include "framework/common/Logger.hpp"

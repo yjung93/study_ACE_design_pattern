@@ -19,7 +19,6 @@ constexpr int PORT = 8080;
 Client::Client()
 {
     // TODO Auto-generated constructor stub
-
 }
 
 Client::~Client()
@@ -41,9 +40,28 @@ void Client::initialize()
     }
 
     OutputHandler *pOutputHandler = &mOutputHandler;
-    int result = mConnector.connect( pOutputHandler, peerAddr, O_NONBLOCK );
-//    int result = mConnector.connect( pOutputHandler, peerAddr, 0 );
-    LOG_INFO( "connect result=" << result );
+
+    // nonbock mode
+    int result = mConnector.connect( pOutputHandler, peerAddr, 0, O_NONBLOCK );
+
+    /*
+    // block mode 
+    int timeout_ms = 3000;
+    
+    struct timeval tv;
+    tv.tv_sec = timeout_ms / 1000;
+    tv.tv_usec = ( timeout_ms % 1000 ) * 1000;
+
+    int result = mConnector.connect( pOutputHandler, peerAddr, &tv, 0 );
+    */
+
+    if ( result == -1 )
+    {
+        LOG_INFO( "connect result="
+                  << result
+                  << ", errno="
+                  << errno );
+    }
 }
 
 void Client::finish()
@@ -54,5 +72,5 @@ void Client::sendMessage( string message )
 {
     mOutputHandler.sendMessage( message );
 }
-}
+} // namespace ex_acceptor_connector
 /* namespace v_1_1 */

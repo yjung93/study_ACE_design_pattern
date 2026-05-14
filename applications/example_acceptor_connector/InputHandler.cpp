@@ -8,7 +8,6 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
-#include <sys/socket.h>
 #include "InputHandler.hpp"
 #include "framework/reactor/1_0/Reactor.hpp"
 #include "framework/common/Logger.hpp"
@@ -16,8 +15,8 @@
 namespace ex_acceptor_connector
 {
 
-InputHandler::InputHandler() :
-                ServiceHandler( Reactor_1_0::Reactor::getInstance() )
+InputHandler::InputHandler()
+    : ServiceHandler( Reactor_1_0::Reactor::getInstance() )
 {
     LOG_INFO( "called" );
 }
@@ -33,8 +32,7 @@ int InputHandler::handleInput( int fd )
 
     const int bufferSize = 1024;
 
-    char buffer[bufferSize] =
-    { 0 };
+    char buffer[bufferSize] = { 0 };
 
     int valread = peer().recv_n( buffer, bufferSize, 0 );
     if ( valread == 0 )
@@ -43,10 +41,12 @@ int InputHandler::handleInput( int fd )
         LOG_INFO( "client disconnected, socket FD: " << fd );
         peer().close_reader();
         getReactor()->removeHandler( this, ALL_EVENTS_MASK );
-    }else if ( valread < 0 )
+    }
+    else if ( valread < 0 )
     {
         perror( "recv failed" );
-    }else
+    }
+    else
     {
         // Echo the message back to client
         LOG_INFO( "received message: " << buffer );
@@ -67,4 +67,3 @@ int InputHandler::close()
 }
 
 } /* namespace ex_acceptor_connector */
-

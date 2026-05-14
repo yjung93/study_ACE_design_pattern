@@ -48,7 +48,7 @@ bool Connector<SVC_HANDLER, PEER_CONNECTOR>::close( SVC_HANDLER *&sh )
 }
 
 template <typename SVC_HANDLER, typename PEER_CONNECTOR>
-int Connector<SVC_HANDLER, PEER_CONNECTOR>::connect( SVC_HANDLER *&svcHandler, const typename PEER_CONNECTOR::PEER_ADDR &remoteAddr, int flags )
+int Connector<SVC_HANDLER, PEER_CONNECTOR>::connect( SVC_HANDLER *&svcHandler, const typename PEER_CONNECTOR::PEER_ADDR &remoteAddr, const timeval *timeOut, int flags )
 {
     int result = 0;
 
@@ -56,7 +56,7 @@ int Connector<SVC_HANDLER, PEER_CONNECTOR>::connect( SVC_HANDLER *&svcHandler, c
 
     if ( result != -1 )
     {
-        result = connectSvcHandler( svcHandler, remoteAddr, flags );
+        result = connectSvcHandler( svcHandler, remoteAddr, timeOut, flags );
     }
 
     if ( result != -1 )
@@ -105,7 +105,7 @@ int Connector<SVC_HANDLER, PEER_CONNECTOR>::makeSvcHandler( SVC_HANDLER *&svcHan
 }
 
 template <typename SVC_HANDLER, typename PEER_CONNECTOR>
-int Connector<SVC_HANDLER, PEER_CONNECTOR>::connectSvcHandler( SVC_HANDLER *svcHandler, const typename PEER_CONNECTOR::PEER_ADDR remoteAddr, int flags )
+int Connector<SVC_HANDLER, PEER_CONNECTOR>::connectSvcHandler( SVC_HANDLER *svcHandler, const typename PEER_CONNECTOR::PEER_ADDR remoteAddr, const timeval *timeOut, int flags )
 {
     LOG_INFO( "flag=0x" << std::hex << flags );
 
@@ -118,7 +118,7 @@ int Connector<SVC_HANDLER, PEER_CONNECTOR>::connectSvcHandler( SVC_HANDLER *svcH
 
     if ( result != -1 )
     {
-        result = mConnector.connect( svcHandler->peer(), remoteAddr, 0, flags );
+        result = mConnector.connect( svcHandler->peer(), remoteAddr, timeOut, 0, flags );
     }
 
     return result;
