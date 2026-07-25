@@ -138,7 +138,7 @@ int SockStream::disable( int value )
 
 int SockStream::getRemoteAddr( sockaddr_in &socketAddr ) const
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     int result = 0;
     socklen_t peerLen = sizeof( socketAddr );

@@ -15,12 +15,12 @@ namespace Task_1_0
 Task::Task()
     : mStopRequested( false )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 Task::~Task()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
     {
         lock_guard<mutex> guard( mQueueMutex );
         mStopRequested = true;

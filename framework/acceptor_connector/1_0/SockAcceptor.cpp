@@ -16,17 +16,17 @@ namespace AcceptorConnector_1_0
 SockAcceptor::SockAcceptor()
     : mHandle( 0 )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 SockAcceptor::~SockAcceptor()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 int SockAcceptor::open( PEER_ADDR peerAddr )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     int acceptorFd;
     int opt = 1;
@@ -108,12 +108,12 @@ int SockAcceptor::accept( SockStream &newStream, int fd )
 
 void SockAcceptor::setHandle( int handle )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
     mHandle = handle;
 }
 int SockAcceptor::getHandle()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
     return mHandle;
 }
 

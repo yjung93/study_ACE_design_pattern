@@ -19,7 +19,7 @@ template <typename SVC_HANDLER, typename PEER_CONNECTOR>
 Connector<SVC_HANDLER, PEER_CONNECTOR>::Connector( Reactor_1_0::Reactor *reactor, int flags )
     : Reactor_1_0::EventHandler( reactor )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     this->open( reactor, flags );
 }
@@ -27,12 +27,12 @@ Connector<SVC_HANDLER, PEER_CONNECTOR>::Connector( Reactor_1_0::Reactor *reactor
 template <typename SVC_HANDLER, typename PEER_CONNECTOR>
 Connector<SVC_HANDLER, PEER_CONNECTOR>::~Connector()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 template <typename SVC_HANDLER, typename PEER_CONNECTOR>
 int Connector<SVC_HANDLER, PEER_CONNECTOR>::open( Reactor_1_0::Reactor *reactor, int flags )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     this->setReactor( reactor );
     this->mFlags = flags;
@@ -42,7 +42,7 @@ int Connector<SVC_HANDLER, PEER_CONNECTOR>::open( Reactor_1_0::Reactor *reactor,
 template <typename SVC_HANDLER, typename PEER_CONNECTOR>
 bool Connector<SVC_HANDLER, PEER_CONNECTOR>::close( SVC_HANDLER *&sh )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     return true;
 }
@@ -89,7 +89,7 @@ int Connector<SVC_HANDLER, PEER_CONNECTOR>::handleClose( int handle )
 template <typename SVC_HANDLER, typename PEER_CONNECTOR>
 int Connector<SVC_HANDLER, PEER_CONNECTOR>::makeSvcHandler( SVC_HANDLER *&svcHandler )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     if ( svcHandler == nullptr )
     {
@@ -127,7 +127,7 @@ int Connector<SVC_HANDLER, PEER_CONNECTOR>::connectSvcHandler( SVC_HANDLER *svcH
 template <typename SVC_HANDLER, typename PEER_CONNECTOR>
 int Connector<SVC_HANDLER, PEER_CONNECTOR>::activateSvcHandler( SVC_HANDLER *svcHandler )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     int result = 0;
     if ( svcHandler == nullptr )
@@ -154,7 +154,7 @@ int Connector<SVC_HANDLER, PEER_CONNECTOR>::activateSvcHandler( SVC_HANDLER *svc
 template <typename SVC_HANDLER, typename PEER_CONNECTOR>
 int Connector<SVC_HANDLER, PEER_CONNECTOR>::nonblockingConnect( SVC_HANDLER *svcHandler )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     int result = -1;
     NBCH *nbch = 0;
@@ -173,7 +173,7 @@ int Connector<SVC_HANDLER, PEER_CONNECTOR>::nonblockingConnect( SVC_HANDLER *svc
 template <typename SVC_HANDLER, typename PEER_CONNECTOR>
 void Connector<SVC_HANDLER, PEER_CONNECTOR>::initializeSvcHandler( int handle, SVC_HANDLER *svc_handler )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     bool result = true;
 
@@ -221,7 +221,7 @@ template <typename SVC_HANDLER>
 int NonBlockingConnectHandler<SVC_HANDLER>::handleOutput( int handle )
 {
     // Called when a connection is establishment asynchronous.
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     // Grab the connector ref before smashing ourselves in close().
     ConnectorBase<SVC_HANDLER> &connector = this->mConnector;
@@ -239,7 +239,7 @@ int NonBlockingConnectHandler<SVC_HANDLER>::handleOutput( int handle )
 template <typename SVC_HANDLER>
 int NonBlockingConnectHandler<SVC_HANDLER>::handleInput( int handle )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     return 0;
 }
@@ -247,7 +247,7 @@ int NonBlockingConnectHandler<SVC_HANDLER>::handleInput( int handle )
 template <typename SVC_HANDLER>
 int NonBlockingConnectHandler<SVC_HANDLER>::handleClose( int handle )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     return 0;
 }
@@ -255,7 +255,7 @@ int NonBlockingConnectHandler<SVC_HANDLER>::handleClose( int handle )
 template <typename SVC_HANDLER>
 int NonBlockingConnectHandler<SVC_HANDLER>::handleException( int handle )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     return 0;
 }
@@ -263,7 +263,7 @@ int NonBlockingConnectHandler<SVC_HANDLER>::handleException( int handle )
 template <typename SVC_HANDLER>
 SVC_HANDLER *NonBlockingConnectHandler<SVC_HANDLER>::svcHandler()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     return mSvcHandler;
 }

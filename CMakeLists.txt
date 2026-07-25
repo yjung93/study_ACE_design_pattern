@@ -22,7 +22,8 @@ set (framework_v_1_1_lib
      framework/v_1_1/SockStream.cpp )
 
 set (lib_framework_common_lib 
-     framework/common/ErrnoGuard.cpp )
+     framework/common/ErrnoGuard.cpp
+     framework/common/Utils.cpp )
      
 set (lib_framework_reactor_1_0
      framework/reactor/1_0/EventHandler.cpp 
@@ -31,7 +32,16 @@ set (lib_framework_reactor_1_0
 set (lib_framework_task_1_0
      framework/task/1_0/Task.cpp )
 
-     
+set (lib_framework_task_2_0
+     framework/task/2_0/Task.cpp )
+
+set (lib_framework_stream_1_0
+     framework/stream/1_0/Module.cpp
+     framework/stream/1_0/Stream.cpp 
+     framework/stream/1_0/StreamModule.cpp
+     framework/stream/1_0/StreamHead.cpp
+     framework/stream/1_0/StreamTail.cpp )
+
 set (lib_framework_active_object_1_0
      framework/active_object/1_0/Future.cpp
      framework/active_object/1_0/MethodRequest.cpp 
@@ -105,6 +115,18 @@ set (ex_proactor_server_lib
      applications/example_proactor/MainServer.cpp
      applications/example_proactor/Acceptor.cpp
      applications/example_proactor/ServerEventHandler.cpp )
+
+set (ex_stream_client_lib 
+     applications/example_stream/MainClient.cpp )
+     
+set (ex_stream_server_lib
+     applications/example_stream/MainServer.cpp
+     applications/example_stream/Acceptor.cpp
+     applications/example_stream/ServerEventHandler.cpp
+     applications/example_stream/ResponseMessage.cpp
+     applications/example_stream/TimeInfo.cpp
+     applications/example_stream/ServerInfo.cpp
+     applications/example_stream/Sender.cpp )
      
 
 add_executable(example_reactor_client
@@ -152,7 +174,7 @@ add_executable(ex_active_object_client
 )
 
 add_executable(ex_proactor_client
-  ${ex_proactor_client_lib}
+  ${ex_stream_client_lib}
 )
 
 add_executable(ex_proactor_server
@@ -160,6 +182,19 @@ add_executable(ex_proactor_server
   ${lib_framework_reactor_1_0}
   ${lib_framework_proactor_1_0}
 )
+
+add_executable(ex_stream_client
+  ${ex_stream_client_lib}
+)
+
+add_executable(ex_stream_server
+  ${ex_stream_server_lib}
+  ${lib_framework_reactor_1_0}
+  ${lib_framework_task_2_0}
+  ${lib_framework_stream_1_0}
+  ${lib_framework_common_lib}
+)
+
 
 
  

@@ -9,12 +9,12 @@ namespace ActiveObject_1_0
 ActivationQueue::ActivationQueue()
     : mState( STATE_ACTIVE )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 ActivationQueue::~ActivationQueue()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
     exit();
 }
 
@@ -68,7 +68,7 @@ int ActivationQueue::enqueue( MethodRequest *methodRequest )
 
 void ActivationQueue::exit()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     mState = STATE_SHUTDOWN;
     mQueueCondition.notify_one();

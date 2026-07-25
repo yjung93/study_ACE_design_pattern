@@ -24,12 +24,13 @@ class Task
     Task();
     ~Task();
     virtual int open( void *args = 0 );
-
+    virtual int svc();
+    
     int putQ( const string &message );
     int getQ( string &message );
     int activate();
     int svcRun();
-    virtual int svc();
+
 
   private:
     vector<string> mMessageQueue;

@@ -14,7 +14,7 @@ using namespace ex_acceptor_connector;
 
 void serverThreadFuncion( Reactor_1_0::Reactor *reactor )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     reactor->runReactorEventLoop();
 }

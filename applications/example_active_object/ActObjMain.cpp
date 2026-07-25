@@ -14,17 +14,17 @@ ActObjMain::ActObjMain( Reactor_1_0::Reactor *reactor, ActObjAcceptor &owner )
     : EventHandler( reactor ),
       mOwner( &owner )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 ActObjMain::~ActObjMain()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 void ActObjMain::open()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
     getReactor()->registerHandler( this, EventHandler::READ_MASK );
 
     // Initialize ActObjClient
@@ -34,7 +34,7 @@ void ActObjMain::open()
 
 int ActObjMain::handleInput( int fd )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     const int bufferSize = 1024;
 

@@ -20,23 +20,23 @@ namespace example_reactor
 ServerEventHandler::ServerEventHandler( Reactor_1_0::Reactor *reactor ) :
                 EventHandler( reactor )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 ServerEventHandler::~ServerEventHandler()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 void ServerEventHandler::open()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
     getReactor()->registerHandler( this, EventHandler::READ_MASK );
 }
 
 int ServerEventHandler::handleInput( int fd )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     const int bufferSize = 1024;
 

@@ -96,7 +96,7 @@ int AsynchWriteStream::write( vector<uint8_t> &message,
                               int priority,
                               int signal_number )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
 
     if ( bytes_to_write == 0 )
@@ -133,7 +133,7 @@ int AsynchWriteStream::open( Handler &handler,
                              const void *completionKey,
                              Proactor *proactor )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     mProactor = proactor;
     mhandlerProxy = handler.proxy();

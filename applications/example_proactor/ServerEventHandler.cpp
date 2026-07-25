@@ -23,19 +23,19 @@ ServerEventHandler::ServerEventHandler( Acceptor &owner )
       mMessageWrite( 0 )
 
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 ServerEventHandler::~ServerEventHandler()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     close( handle() );
 }
 
 void ServerEventHandler::open( int new_handle )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     mReader.open( *this, new_handle, 0, proactor() );
     mWriter.open( *this, new_handle, 0, proactor() );

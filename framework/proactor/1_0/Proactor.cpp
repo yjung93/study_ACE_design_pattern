@@ -30,7 +30,7 @@ Proactor::Proactor()
 
 Proactor::~Proactor()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     if ( mAiocbNotifyPipeManager != nullptr )
     {
@@ -170,7 +170,7 @@ int Proactor::startAio( AsynchResult *result,
 {
     lock_guard<recursive_mutex> guard( mRecursiveMutex );
 
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     int returnValue = -1;
     if ( result == 0 ) // Just check the status of the list
@@ -292,7 +292,7 @@ int Proactor::startAioI( AsynchResult *result )
 int Proactor::cancelAio( int handle )
 {
     lock_guard<recursive_mutex> guard( mRecursiveMutex );
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     return 0;
 }
@@ -584,7 +584,7 @@ void Proactor::applicationSpecificCode( AsynchResult *asynchResult,
 
 int Proactor::proactorRunEventLoop()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     int result = 0;
 
@@ -667,7 +667,7 @@ void Proactor::createNotifyManager()
 {
     if ( mAiocbNotifyPipeManager == nullptr )
     {
-        LOG_INFO( "called" );
+        LOG_INFO( __FUNCTION__ << "() " << "called" );
 
         mAiocbNotifyPipeManager = new NotifyPipeManager( this );
     }
@@ -679,7 +679,7 @@ void Proactor::createNotifyManager()
 
 int Proactor::notifyCompletion()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     int rc = -1;
 

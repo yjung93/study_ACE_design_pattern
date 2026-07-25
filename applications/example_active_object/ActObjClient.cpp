@@ -11,21 +11,21 @@ ActObjClient::ActObjClient( int socketFd )
     : mSocketFd( socketFd ),
       mUsecaseItterate( 0 )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 ActObjClient::~ActObjClient()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 int ActObjClient::open( void *args )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
     return activate();
 }
 int ActObjClient::svc()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     string message;
     while ( getQ( message ) == 0 )
@@ -43,7 +43,7 @@ int ActObjClient::getHandle()
 
 void ActObjClient::processMessage( const std::string &message )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     string messageToSend = "Unknown Error";
 

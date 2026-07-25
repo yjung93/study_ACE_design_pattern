@@ -14,29 +14,29 @@ EventHandler::EventHandler( Reactor *reactor )
     : mReactor( reactor ),
       mFd( INVALID_HANDLE )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 EventHandler::~EventHandler()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 int EventHandler::handleInput( int fd )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
     return -1;
 }
 
 int EventHandler::handleOutput( int fd )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
     return -1;
 }
 
 int EventHandler::handleClose( int fd )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
     return 0;
 }
 

@@ -47,14 +47,14 @@ Reactor *Reactor::getInstance()
 
 int Reactor::runReactorEventLoop()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     return handleEvents();
 }
 
 int Reactor::handleEvents()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     int result = -1;
     fd_set readfds;

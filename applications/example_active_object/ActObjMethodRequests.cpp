@@ -11,12 +11,12 @@ RequestGetReturnMessage::RequestGetReturnMessage( ActObjServant &Servant,
       mReturnValue( returnVal ),
       mMessage( message )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 int RequestGetReturnMessage::call()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     // status_update with the controller.
     this->mReturnValue.set( this->mServant.RequestGetReturnMessage( mMessage ) );

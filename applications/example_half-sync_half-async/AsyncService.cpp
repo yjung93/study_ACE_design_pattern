@@ -20,17 +20,17 @@ AsyncService::AsyncService( Reactor_1_0::Reactor *reactor, Acceptor &owner )
     : EventHandler( reactor ),
       mOwner( &owner )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 AsyncService::~AsyncService()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 void AsyncService::open()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
     getReactor()->registerHandler( this, EventHandler::READ_MASK );
 
     // Initialize SyncService
@@ -40,7 +40,7 @@ void AsyncService::open()
 
 int AsyncService::handleInput( int fd )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     const int bufferSize = 1024;
 

@@ -31,13 +31,13 @@ NotifyPipeManager::~NotifyPipeManager()
 
 void NotifyPipeManager::handleReadStream( const AsynchReadStreamResult &result )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
     mReadStream.read( mNotifyBuffer, mNotifyBuffer.size() );
 }
 
 int NotifyPipeManager::notify()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
 
     char byte = 1;

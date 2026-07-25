@@ -7,17 +7,17 @@ namespace ExActiveObject
 
 ActObjServantProxy::ActObjServantProxy()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 ActObjServantProxy::~ActObjServantProxy()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 ActiveObject_1_0::Future<string> ActObjServantProxy::requestGetReturnMessage( const string &message )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     ActiveObject_1_0::Future<string> result;
     ActiveObject_1_0::MethodRequest *methodRequest = new RequestGetReturnMessage( mServant, result, message );

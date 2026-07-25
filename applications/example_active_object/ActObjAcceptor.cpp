@@ -70,7 +70,7 @@ void ActObjAcceptor::open()
 
 int ActObjAcceptor::handleInput( int fd )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     int addrlen = sizeof( mAddress );
     int newSocketFd = accept( fd, (struct sockaddr *) &mAddress, (socklen_t *) &( addrlen ) );

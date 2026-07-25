@@ -96,7 +96,7 @@ int AsynchReadStream::read( vector<uint8_t> &message,
                             int priority,
                             int signal_number )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     if ( bytesToRead == 0 )
     {
@@ -132,7 +132,7 @@ int AsynchReadStream::open( Handler &handler,
                             const void *completionKey,
                             Proactor *proactor )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     mProactor = proactor;
     mhandlerProxy = handler.proxy();

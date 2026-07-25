@@ -69,11 +69,10 @@ class Logger
      * @param msg      Already-formatted message string
      */
     static void log( const char* prefix,
-                     const char* func,
                      const std::string& msg )
     {
         const std::lock_guard<std::mutex> lock( getMutex() );
-        std::cout << prefix << func << "(): " << msg << '\n';
+        std::cout << prefix << msg << '\n';
     }
 
     /**
@@ -114,7 +113,7 @@ class Logger
      do {                                                                     \
          std::ostringstream _log_oss;                                         \
          _log_oss << msg;                                                     \
-         Common::Logger::log( "[DEBUG] ", __FUNCTION__, _log_oss.str() );    \
+         Common::Logger::log( "[DEBUG] ", _log_oss.str() );    \
      } while ( 0 )
 #else
 #  define LOG_DEBUG( msg ) do {} while ( 0 )
@@ -128,7 +127,7 @@ class Logger
      do {                                                                     \
          std::ostringstream _log_oss;                                         \
          _log_oss << msg;                                                     \
-         Common::Logger::log( "[INFO]  ", __FUNCTION__, _log_oss.str() );    \
+         Common::Logger::log( "[INFO]  ", _log_oss.str() );    \
      } while ( 0 )
 #else
 #  define LOG_INFO( msg ) do {} while ( 0 )

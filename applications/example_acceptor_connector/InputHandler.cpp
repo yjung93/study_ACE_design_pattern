@@ -18,17 +18,17 @@ namespace ex_acceptor_connector
 InputHandler::InputHandler()
     : ServiceHandler( Reactor_1_0::Reactor::getInstance() )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 InputHandler::~InputHandler()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 int InputHandler::handleInput( int fd )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     const int bufferSize = 1024;
 
@@ -62,7 +62,7 @@ int InputHandler::handleInput( int fd )
 int InputHandler::close()
 {
     int result = 0;
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
     return result;
 }
 

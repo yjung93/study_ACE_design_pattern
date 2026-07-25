@@ -8,18 +8,18 @@ namespace ExActiveObject
 
 ActObjScheduler::ActObjScheduler()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     activate();
 }
 ActObjScheduler::~ActObjScheduler()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 int ActObjScheduler::svc()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     while ( true )
     {
@@ -43,7 +43,7 @@ int ActObjScheduler::svc()
 
 int ActObjScheduler::enqueue( ActiveObject_1_0::MethodRequest *request )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     return mActivationQueue.enqueue( request );
 }

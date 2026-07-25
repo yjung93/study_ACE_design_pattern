@@ -9,7 +9,7 @@ namespace ExActiveObject
 {
 ActObjServant::ActObjServant()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 string ActObjServant::RequestGetReturnMessage( const string &message )

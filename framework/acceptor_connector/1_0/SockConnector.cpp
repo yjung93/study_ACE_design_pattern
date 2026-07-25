@@ -18,28 +18,28 @@ namespace AcceptorConnector_1_0
 SockConnector::SockConnector()
     : mHandle( 0 )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 SockConnector::~SockConnector()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 void SockConnector::setHandle( int handle )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
     mHandle = handle;
 }
 int SockConnector::getHandle()
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
     return mHandle;
 }
 
 int SockConnector::connect( SockStream &newStream, const PEER_ADDR &remoteAddr, const timeval *timeOut, int reuse_addr, int flags, int perms, int protocol )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     int result = 0;
 
@@ -61,7 +61,7 @@ int SockConnector::connect( SockStream &newStream, const PEER_ADDR &remoteAddr, 
 int SockConnector::open( SockStream &newStream, int protocolFamily, int protocol, int reuseAddr )
 {
     int result = 0;
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 
     // Only open a new socket if we don't already have a valid handle.
     if ( ( newStream.getHandle() == INVALID_HANDLE ) && ( newStream.open( SOCK_STREAM, protocolFamily, protocol, reuseAddr ) == -1 ) )
@@ -138,7 +138,7 @@ int SockConnector::connectFinish( SockStream &new_stream, int result, const time
 
 int SockConnector::timedComplete( int handle, const timeval *timeOut )
 {
-    LOG_INFO( "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
     fd_set wset;
     FD_ZERO( &wset );
     FD_SET( handle, &wset );
