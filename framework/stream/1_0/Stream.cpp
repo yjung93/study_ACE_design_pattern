@@ -16,6 +16,14 @@ Stream::Stream( void *arg, Module *head, Module *tail )
       mLinkedUs( nullptr )
 {
 }
+
+Stream::~Stream()
+{
+    if ( mStreamHead != nullptr )
+    {
+        close();
+    }
+}
 int Stream::open( void *arg,
                   Module *head,
                   Module *tail )

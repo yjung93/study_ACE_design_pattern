@@ -1,5 +1,5 @@
-#ifndef APPLICATIONS_EXAMPLE_STREAM_TIMEINFO_HPP_
-#define APPLICATIONS_EXAMPLE_STREAM_TIMEINFO_HPP_
+#ifndef APPLICATIONS_EXAMPLE_STREAM_METADATA_HPP_
+#define APPLICATIONS_EXAMPLE_STREAM_METADATA_HPP_
 
 /*
  * Acceptor.hpp
@@ -8,17 +8,17 @@
  *      Author: yjung93
  */
 
-#include "framework/task/2_0/Task.hpp"
+ #include "framework/task/2_0/Task.hpp"
 #include "framework/stream/1_0/Module.hpp"
 
 namespace example_stream
 {
 
-class TimeInfo : public Task_2_0::Task
+class MetaData : public Task_2_0::Task
 {
   public:
-    TimeInfo();
-    ~TimeInfo();
+    MetaData();
+    ~MetaData();
 
     int put( string &msg ) override;
     int svc() override;
@@ -28,4 +28,4 @@ class TimeInfo : public Task_2_0::Task
 
 } /* namespace example_stream */
 
-#endif /* APPLICATIONS_EXAMPLE_STREAM_TIMEINFO_HPP_ */
+#endif /* APPLICATIONS_EXAMPLE_STREAM_METADATA_HPP_ */

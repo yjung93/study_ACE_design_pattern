@@ -19,8 +19,7 @@ Task::Task()
       mModule( nullptr ),
       mNext( nullptr )
 {
-    LOG_INFO( __FUNCTION__ << "() " << "called" );   
-
+    LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
 
 Task::~Task()
@@ -154,6 +153,19 @@ int Task::putNext( string &msg )
     }
 
     return mNext->put( msg );
+}
+
+Task *Task::getSibling()
+{
+    LOG_INFO( "Task::" << __FUNCTION__ << "() " << "called" );
+    if ( mModule != nullptr )
+    {
+        return mModule->getSibling( this );
+    }
+    else
+    {
+        return nullptr;
+    }
 }
 
 } // namespace Task_2_0

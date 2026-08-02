@@ -17,11 +17,11 @@ template <class TASK>
 class StreamModule : public Stream_1_0::Module
 {
   public:
-    StreamModule( const string &name, TASK *task )
+    StreamModule( const string &name, TASK *taskWriter, TASK *taskReader = nullptr)
     {
         open( name,
-              task,
-              nullptr,
+              taskWriter,
+              taskReader,
               nullptr );
     }
 

@@ -58,6 +58,8 @@ class Task
     Task *getNext();
     void setNext( Task *task );
 
+    Task *getSibling();
+
     int putNext( string &msg );
     bool isWriter();
 

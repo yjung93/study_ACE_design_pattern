@@ -12,14 +12,16 @@
 
 #include "framework/common/Logger.hpp"
 #include "framework/common/Utils.hpp"
+#include "framework/stream/1_0/StreamThrough.hpp"
 #include "ServerEventHandler.hpp"
 
 #include "StreamModule.hpp"
 #include "ResponseMessage.hpp"
-#include "TimeInfo.hpp"
-#include "ServerInfo.hpp"
 #include "Sender.hpp"
+#include "Receiver.hpp"
+#include "MetaData.hpp"
 #include "DataType.hpp"
+
 
 using namespace std;
 
@@ -27,7 +29,8 @@ namespace example_stream
 {
 
 ServerEventHandler::ServerEventHandler( Reactor_1_0::Reactor *reactor )
-    : EventHandler( reactor )
+    : EventHandler( reactor ),
+      mBottomModule( nullptr )
 {
     LOG_INFO( __FUNCTION__ << "() " << "called" );
 }
@@ -44,15 +47,16 @@ void ServerEventHandler::open()
 
     mStream.open();
 
-    mStream.push( new StreamModule<Sender>( "Sender", new Sender( getHandle() ) ) );
-    mStream.push( new StreamModule<ServerInfo>( "ServerInfo", new ServerInfo() ) );
-    mStream.push( new StreamModule<TimeInfo>( "TimeInfo", new TimeInfo() ) );
-    mStream.push( new StreamModule<ResponseMessage>( "ResponseMessage", new ResponseMessage() ) );
+    mBottomModule = new Stream_1_0::Module( "Network Layer", new Sender( getHandle() ), new Receiver() );
+
+    mStream.push( mBottomModule );
+    mStream.push( new Stream_1_0::Module( "MetaData Layer", new MetaData(), new Stream_1_0::StreamThrough() ) );
+    mStream.push( new Stream_1_0::Module( "Application Layer", new Stream_1_0::StreamThrough(), new ResponseMessage() ) );
 }
 
 int ServerEventHandler::handleInput( int fd )
 {
-    LOG_INFO( __FUNCTION__ << "() " << "called" );
+    LOG_INFO( __FUNCTION__ << "() " << "called ---------------------" );
 
     const int bufferSize = 1024;
 
@@ -71,19 +75,20 @@ int ServerEventHandler::handleInput( int fd )
         // Echo the message back to client
         LOG_INFO( "received message: " << buffer );
 
-        // string messageToSend = "Echo - " + string( buffer );
-        // send( fd, messageToSend.c_str(), messageToSend.size(), 0 );
+        // TCP may merge or split sends, so buffer bytes and only dispatch complete '\n'-terminated messages
+        mRecvBuffer.append( buffer, valread );
 
-        // LOG_INFO( "replied message: " << messageToSend );
+        size_t delimiterPos;
+        while ( ( delimiterPos = mRecvBuffer.find( '\n' ) ) != string::npos )
+        {
+            string message = mRecvBuffer.substr( 0, delimiterPos );
+            mRecvBuffer.erase( 0, delimiterPos + 1 );
 
-        map<string, string> data = {
-            { Stream_1_0::MessageType, Stream_1_0::VendorData },
-            { RecievedMessage, buffer },
-            { ReplyMessage, "" }
-        };
-
-        string message = Framework_Common::Utils::formatKeyValue( data );
-        mStream.put( message );
+            if ( mBottomModule != nullptr && !message.empty() )
+            {
+                mBottomModule->getReader()->put( message );
+            }
+        }
     }
 
     return 0;

@@ -15,6 +15,7 @@ class Stream
 {
   public:
     Stream( void *arg = nullptr, Module *head = nullptr, Module *tail = nullptr );
+    ~Stream(); 
     int open( void *arg = 0,
               Module *head = 0,
               Module *tail = 0 );

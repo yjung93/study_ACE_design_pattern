@@ -42,6 +42,8 @@ class Module
 
     void setNext( Module *module );
     Module *getNext();
+    
+    Task_2_0::Task *getSibling( Task_2_0::Task *org );
 
     int close();
     int closeImpl( PipePare which );

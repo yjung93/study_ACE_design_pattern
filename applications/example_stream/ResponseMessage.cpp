@@ -31,23 +31,35 @@ int ResponseMessage::svc()
         int rc = getQ( message );
         if ( rc != -1 )
         {
-            auto data = Framework_Common::Utils::parseKeyValueString( message );
-            if ( data.find( Stream_1_0::MessageType ) != data.end() )
+            auto dataReceived = Framework_Common::Utils::parseKeyValueString( message );
+            if ( dataReceived.find( Stream_1_0::MessageType ) != dataReceived.end() )
             {
-                if ( data[Stream_1_0::MessageType] == Stream_1_0::VendorData )
+                if ( dataReceived[Stream_1_0::MessageType] == Stream_1_0::VendorData )
                 {
-                    stringstream ssRply;
-                    ssRply << "Echo-" << data[RecievedMessage];
-                    data[ReplyMessage] = ssRply.str();
+                    map<string, string> dataResponse;
+                    dataResponse = {
+                        { Stream_1_0::MessageType, Stream_1_0::VendorData },
+                        { RecievedMessage, dataReceived[RecievedMessage] },
+                        { ReplyMessage, "" }
+                    };
 
-                    message = Framework_Common::Utils::formatKeyValue( data );
+                    stringstream ssResp;
+                    ssResp << "Echo-" << dataReceived[RecievedMessage];
+                    dataResponse[ReplyMessage] = ssResp.str();
+
+                    message = Framework_Common::Utils::formatKeyValue( dataResponse );
                     LOG_INFO( "ResponseMessage::" << __FUNCTION__ << "() " << "new Message: " << message );
                 }
-                if ( data[Stream_1_0::MessageType] == Stream_1_0::Stop )
+                else if ( dataReceived[Stream_1_0::MessageType] == Stream_1_0::Stop )
                 {
+                    stop = true;
                 }
             }
-            putNext( message );
+            Task *sibling = getSibling();
+            if ( sibling != nullptr )
+            {
+                sibling->put( message );
+            }
         }
     }
     return 0;

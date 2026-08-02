@@ -10,6 +10,9 @@ namespace example_stream
 
 const string RecievedMessage = "received-message";
 const string ReplyMessage = "reply-message";
+const string PacketSequenceSize = "packet-sequence-size";
+const string PacketSequenceIndex = "packet-sequence-index";
+const string PacketMessage = "packet-message";
 
 } // namespace example_stream
 

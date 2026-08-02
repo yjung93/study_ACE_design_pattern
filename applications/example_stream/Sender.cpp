@@ -48,9 +48,14 @@ int Sender::svc()
                               << __FUNCTION__ << "() "
                               << "message: "
                               << data[ReplyMessage] );
-                              
+
                     send( mFd, data[ReplyMessage].c_str(), data[ReplyMessage].size(), 0 );
                 }
+                else if ( data[Stream_1_0::MessageType] == Stream_1_0::Stop )
+                {
+                    stop = true;
+                }
+                // putNext( message );
             }
         }
     }

@@ -130,6 +130,23 @@ Module *Module::getNext()
     return mNext;
 }
 
+Task_2_0::Task *Module::getSibling( Task_2_0::Task *org )
+{
+    LOG_INFO( "Module::" << __FUNCTION__ << "() " << "called" );
+    if ( mPipePaire[PIPE_READ_SIDE] == org )
+    {
+        return mPipePaire[PIPE_WRITE_SIDE];
+    }
+    else if ( mPipePaire[PIPE_WRITE_SIDE] == org )
+    {
+        return mPipePaire[PIPE_READ_SIDE];
+    }
+    else
+    {
+        return nullptr;
+    }
+}
+
 int Module::close()
 {
     closeImpl( PIPE_READ_SIDE );

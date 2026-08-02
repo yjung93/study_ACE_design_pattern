@@ -40,7 +40,8 @@ set (lib_framework_stream_1_0
      framework/stream/1_0/Stream.cpp 
      framework/stream/1_0/StreamModule.cpp
      framework/stream/1_0/StreamHead.cpp
-     framework/stream/1_0/StreamTail.cpp )
+     framework/stream/1_0/StreamTail.cpp
+     framework/stream/1_0/StreamThrough.cpp )
 
 set (lib_framework_active_object_1_0
      framework/active_object/1_0/Future.cpp
@@ -124,9 +125,9 @@ set (ex_stream_server_lib
      applications/example_stream/Acceptor.cpp
      applications/example_stream/ServerEventHandler.cpp
      applications/example_stream/ResponseMessage.cpp
-     applications/example_stream/TimeInfo.cpp
-     applications/example_stream/ServerInfo.cpp
-     applications/example_stream/Sender.cpp )
+     applications/example_stream/Sender.cpp
+     applications/example_stream/Receiver.cpp
+     applications/example_stream/MetaData.cpp )
      
 
 add_executable(example_reactor_client
@@ -174,7 +175,7 @@ add_executable(ex_active_object_client
 )
 
 add_executable(ex_proactor_client
-  ${ex_stream_client_lib}
+  ${ex_proactor_client_lib}
 )
 
 add_executable(ex_proactor_server
@@ -185,6 +186,7 @@ add_executable(ex_proactor_server
 
 add_executable(ex_stream_client
   ${ex_stream_client_lib}
+  ${lib_framework_common_lib}
 )
 
 add_executable(ex_stream_server
