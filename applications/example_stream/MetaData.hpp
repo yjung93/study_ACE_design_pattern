@@ -10,6 +10,7 @@
 
  #include "framework/task/2_0/Task.hpp"
 #include "framework/stream/1_0/Module.hpp"
+#include <atomic>
 
 namespace example_stream
 {
@@ -22,8 +23,10 @@ class MetaData : public Task_2_0::Task
 
     int put( string &msg ) override;
     int svc() override;
-
+    int close( u_long flags = 0 ) override;
+    
   private:
+    std::atomic<bool> mStopThread;
 };
 
 } /* namespace example_stream */

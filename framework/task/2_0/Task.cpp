@@ -15,6 +15,7 @@ namespace Task_2_0
 
 Task::Task()
     : mFlags( 0u ),
+      mName( "" ),
       mStopRequested( false ),
       mModule( nullptr ),
       mNext( nullptr )
@@ -25,17 +26,21 @@ Task::Task()
 Task::~Task()
 {
     LOG_INFO( __FUNCTION__ << "() " << "called" );
-    {
-        lock_guard<mutex> guard( mQueueMutex );
-        mStopRequested = true;
-    }
-
-    mQueueCondition.notify_all();
+    requestStop();
 
     if ( mWorkerThread.joinable() )
     {
         mWorkerThread.join();
     }
+}
+
+void Task::requestStop()
+{
+    {
+        lock_guard<mutex> guard( mQueueMutex );
+        mStopRequested = true;
+    }
+    mQueueCondition.notify_all();
 }
 
 int Task::activate()
@@ -104,33 +109,47 @@ int Task::getQ( string &message )
 
 int Task::svcRun()
 {
-    bool returnCode = false;
+    int returnCode = 0;
     returnCode = svc();
-
+    LOG_INFO( "Task::" << __FUNCTION__ << "() " << "exiting thread, returnCode=" << returnCode );
     return returnCode;
 }
 
+void Task::wait()
+{
+    LOG_INFO( "Task::" << __FUNCTION__ << "() " << "called" );
+    mQueueCondition.notify_all();
+
+    if ( mWorkerThread.joinable() )
+    {
+        LOG_INFO( "Task::" << __FUNCTION__ << "() " << "mWorkerThread.joinable, Name=" << mName );
+        mWorkerThread.join();
+    }
+}
 int Task::open( void *a )
 {
-    LOG_INFO( "Default open implementation. Override in derived class." );
+    LOG_INFO( "Default Task::open implementation. Override in derived class." );
     return 0;
 }
 int Task::close( u_long flags )
 {
-    LOG_INFO( "Default close implementation. Override in derived class." );
+    LOG_INFO( "Default Task::close implementation. Override in derived class." );
     return 0;
 }
 int Task::put( string &msg )
 {
-    LOG_INFO( "Default put implementation. Override in derived class." );
+    LOG_INFO( "Default Task::put implementation. Override in derived class." );
     return 0;
 }
 int Task::svc()
 {
-    LOG_INFO( "Default svc implementation. Override in derived class." );
+    LOG_INFO( "Default Task::svc implementation. Override in derived class." );
     return 0;
 }
-
+int Task::moduleClosed()
+{
+    return close( 1 );
+}
 Task *Task::getNext()
 {
     return mNext;

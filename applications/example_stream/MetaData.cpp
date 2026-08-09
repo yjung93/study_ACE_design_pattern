@@ -16,7 +16,9 @@ namespace example_stream
 {
 
 MetaData::MetaData()
+    : mStopThread( false )
 {
+    mName = "Receiver";
     activate();
 }
 MetaData::~MetaData()
@@ -29,10 +31,17 @@ int MetaData::put( string &msg )
     return 0;
 }
 
+int MetaData::close( u_long flags )
+{
+    LOG_INFO( "MetaData::" << __FUNCTION__ << "()" << " called" );
+    mStopThread = true;
+    requestStop();
+    return 0;
+}
+
 int MetaData::svc()
 {
-    bool stop = false;
-    while ( stop != true )
+    while ( mStopThread != true )
     {
         string message;
         int rc = getQ( message );
@@ -81,7 +90,7 @@ int MetaData::svc()
 
                     //-----------------------------------
                     // Add metadata to replay-message
-                    //-----------------------------------E
+                    //-----------------------------------
 
                     // server ip to server info
                     stringstream ssServerinfo;
@@ -98,7 +107,8 @@ int MetaData::svc()
                 }
                 else if ( data[Stream_1_0::MessageType] == Stream_1_0::Stop )
                 {
-                    stop = true;
+                    LOG_INFO( "MetaData::" << __FUNCTION__ << "() " << Stream_1_0::Stop );
+                    mStopThread = true;
                 }
                 putNext( message );
             }

@@ -30,6 +30,12 @@ Module::Module( const string &name,
 
 Module::~Module()
 {
+    LOG_INFO( "Module::" << __FUNCTION__ << "() " << "called" );
+
+    if ( getReader() || getWriter() )
+    {
+        close();
+    }
 }
 
 int Module::open( const string &name,
@@ -157,7 +163,33 @@ int Module::close()
 
 int Module::closeImpl( PipePare which )
 {
-    return 0;
+    if ( this->mPipePaire[which] == nullptr )
+    {
+        //LOG_INFO( "Module::" << __FUNCTION__ << "() " << " no pipe craeted yet, pipe=" << which );
+        return 0;
+    }
+    LOG_INFO( "Module::" << __FUNCTION__ << "() " << "called" );
+    
+    
+    // Copy task pointer to prevent problems when Task::close
+    // changes the task pointer
+    Task_2_0::Task *task = this->mPipePaire[which];
+
+    // Change so that close doesn't get called again from the task.
+    // Now close the task.
+    int result = 0;
+
+    if ( task->moduleClosed() == -1 )
+    {
+        result = -1;
+    }
+
+    task->setNext( 0 );
+    task->wait();
+    delete task;
+
+    this->mPipePaire[which] = 0;
+    return result;
 }
 
 void Module::link( Module *module )

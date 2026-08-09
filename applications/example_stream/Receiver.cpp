@@ -17,7 +17,9 @@ namespace example_stream
 {
 
 Receiver::Receiver()
+    : mStopThread( false )
 {
+    mName = "Receiver";
     activate();
 }
 Receiver::~Receiver()
@@ -30,10 +32,17 @@ int Receiver::put( string &msg )
     return 0;
 }
 
+int Receiver::close( u_long flags )
+{
+    LOG_INFO( "Receiver::" << __FUNCTION__ << "()" << " called" );
+    mStopThread = true;
+    requestStop();
+    return 0;
+}
+
 int Receiver::svc()
 {
-    bool stop = false;
-    while ( stop != true )
+    while ( mStopThread != true )
     {
         string message;
         int rc = getQ( message );
@@ -91,14 +100,15 @@ int Receiver::svc()
                             { RecievedMessage, completedMessage },
                         };
 
-                        auto message = Framework_Common::Utils::formatKeyValue( data );
-                        putNext( message );
+                        message = Framework_Common::Utils::formatKeyValue( data );
                     }
                 }
                 else if ( data[Stream_1_0::MessageType] == Stream_1_0::Stop )
                 {
-                    stop = true;
+                    LOG_INFO( "Receiver::" << __FUNCTION__ << "() " << Stream_1_0::Stop );
+                    mStopThread = true;
                 }
+                putNext( message );
             }
         }
     }

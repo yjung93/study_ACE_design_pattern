@@ -1,5 +1,5 @@
-#ifndef TASK_2_0_EVENTHANDLER_HPP_
-#define TASK_2_0_EVENTHANDLER_HPP_
+#ifndef TASK_2_0_HPP_
+#define TASK_2_0_HPP_
 
 /*
  * Task.hpp
@@ -50,11 +50,15 @@ class Task
     int activate();
     int svcRun();
 
+    void wait();
+    void requestStop();
+    
     virtual int open( void *args = 0 );
     virtual int close( u_long flags = 0 );
     virtual int put( string &msg );
     virtual int svc();
 
+    int moduleClosed();
     Task *getNext();
     void setNext( Task *task );
 
@@ -63,8 +67,10 @@ class Task
     int putNext( string &msg );
     bool isWriter();
 
+
   protected:
     u_long mFlags;
+    string mName;  
 
   private:
     friend Stream_1_0::Module;

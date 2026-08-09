@@ -15,19 +15,24 @@
 namespace example_stream
 {
 
+class Acceptor;
+
 class ServerEventHandler : public Reactor_1_0::EventHandler
 {
   public:
-    ServerEventHandler( Reactor_1_0::Reactor *reactor = Reactor_1_0::Reactor::getInstance() );
+    ServerEventHandler( Acceptor &owner, Reactor_1_0::Reactor *reactor = Reactor_1_0::Reactor::getInstance() );
     virtual ~ServerEventHandler();
 
     void open();
+    void close();
 
   private:
     int handleInput( int fd = Reactor_1_0::INVALID_HANDLE ) override;
     Stream_1_0::Stream mStream;
     Stream_1_0::Module *mBottomModule;
     string mRecvBuffer; // holds partial/leftover bytes across reads until a full '\n'-terminated message arrives
+
+    Acceptor *mOwner;
 };
 
 } /* namespace example_stream */

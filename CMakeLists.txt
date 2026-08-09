@@ -38,7 +38,6 @@ set (lib_framework_task_2_0
 set (lib_framework_stream_1_0
      framework/stream/1_0/Module.cpp
      framework/stream/1_0/Stream.cpp 
-     framework/stream/1_0/StreamModule.cpp
      framework/stream/1_0/StreamHead.cpp
      framework/stream/1_0/StreamTail.cpp
      framework/stream/1_0/StreamThrough.cpp )

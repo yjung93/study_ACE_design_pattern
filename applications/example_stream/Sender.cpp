@@ -15,9 +15,12 @@
 namespace example_stream
 {
 
-Sender::Sender( int handle )
-    : mFd( handle )
+Sender::Sender( ServerEventHandler *owner, int handle )
+    : mFd( handle ),
+      mStopThread( false ),
+      mOwner( owner )
 {
+    mName = "Sender";
     activate();
 }
 Sender::~Sender()
@@ -30,10 +33,17 @@ int Sender::put( string &msg )
     return 0;
 }
 
+int Sender::close( u_long flags )
+{
+    LOG_INFO( "Sender::" << __FUNCTION__ << "()" << " called" );
+    mStopThread = true;
+    requestStop();
+    return 0;
+}
+
 int Sender::svc()
 {
-    bool stop = false;
-    while ( stop != true )
+    while ( mStopThread != true )
     {
         string message;
         int rc = getQ( message );
@@ -50,12 +60,15 @@ int Sender::svc()
                               << data[ReplyMessage] );
 
                     send( mFd, data[ReplyMessage].c_str(), data[ReplyMessage].size(), 0 );
+                    
                 }
                 else if ( data[Stream_1_0::MessageType] == Stream_1_0::Stop )
                 {
-                    stop = true;
+                    LOG_INFO( "Sender::" << __FUNCTION__ << "() " << Stream_1_0::Stop );
+                    mStopThread = true;  
+                   
                 }
-                // putNext( message );
+                putNext( message );
             }
         }
     }
