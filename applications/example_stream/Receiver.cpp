@@ -101,14 +101,15 @@ int Receiver::svc()
                         };
 
                         message = Framework_Common::Utils::formatKeyValue( data );
+                        putNext( message );
                     }
                 }
                 else if ( data[Stream_1_0::MessageType] == Stream_1_0::Stop )
                 {
                     LOG_INFO( "Receiver::" << __FUNCTION__ << "() " << Stream_1_0::Stop );
                     mStopThread = true;
+                    putNext( message );
                 }
-                putNext( message );
             }
         }
     }
