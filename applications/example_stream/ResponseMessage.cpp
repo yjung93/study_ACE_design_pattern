@@ -53,12 +53,12 @@ int ResponseMessage::svc()
                     map<string, string> mapResponse;
                     mapResponse = {
                         { Stream_1_0::MessageType, Stream_1_0::VendorData },
-                        { RecievedMessage, dataReceived[RecievedMessage] },
+                        { ReceivedMessage, dataReceived[ReceivedMessage] },
                         { ReplyMessage, "" }
                     };
 
                     stringstream ssResp;
-                    ssResp << "Echo-" << dataReceived[RecievedMessage];
+                    ssResp << "Echo-" << dataReceived[ReceivedMessage];
                     mapResponse[ReplyMessage] = ssResp.str();
 
                     string strResponse = Framework_Common::Utils::formatKeyValue( mapResponse );

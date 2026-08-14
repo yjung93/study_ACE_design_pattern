@@ -5,20 +5,14 @@
 #include "Sender.hpp"
 #include "DataType.hpp"
 
-#include <chrono>
-#include <iomanip>
-#include <sstream>
-#include <unistd.h>
-#include <netdb.h>
-#include <arpa/inet.h>
+#include <sys/socket.h>
 
 namespace example_stream
 {
 
-Sender::Sender( ServerEventHandler *owner, int handle )
+Sender::Sender( int handle )
     : mFd( handle ),
-      mStopThread( false ),
-      mOwner( owner )
+      mStopThread( false )
 {
     mName = "Sender";
     activate();
@@ -60,13 +54,11 @@ int Sender::svc()
                               << data[ReplyMessage] );
 
                     send( mFd, data[ReplyMessage].c_str(), data[ReplyMessage].size(), 0 );
-                    
                 }
                 else if ( data[Stream_1_0::MessageType] == Stream_1_0::Stop )
                 {
                     LOG_INFO( "Sender::" << __FUNCTION__ << "() " << Stream_1_0::Stop );
-                    mStopThread = true;  
-                   
+                    mStopThread = true;
                 }
                 putNext( message );
             }

@@ -2,14 +2,13 @@
 #define APPLICATIONS_EXAMPLE_STREAM_RESPONSE_MESSAGE_HPP_
 
 /*
- * Acceptor.hpp
+ * ResponseMessage.hpp
  *
  *  Created on: June 30, 2026
  *      Author: yjung93
  */
 
 #include "framework/task/2_0/Task.hpp"
-#include "framework/stream/1_0/Module.hpp"
 #include <atomic>
 
 namespace example_stream

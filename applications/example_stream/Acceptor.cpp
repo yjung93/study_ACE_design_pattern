@@ -27,7 +27,6 @@ Acceptor::Acceptor( Reactor_1_0::Reactor *reactor )
 
 Acceptor::~Acceptor()
 {
-    // TODO Auto-generated destructor stub
 }
 
 void Acceptor::open()

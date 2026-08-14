@@ -15,7 +15,6 @@
 #include "framework/stream/1_0/StreamThrough.hpp"
 #include "ServerEventHandler.hpp"
 
-#include "StreamModule.hpp"
 #include "ResponseMessage.hpp"
 #include "Sender.hpp"
 #include "Receiver.hpp"
@@ -46,9 +45,7 @@ void ServerEventHandler::open()
     LOG_INFO( __FUNCTION__ << "() " << "called" );
     getReactor()->registerHandler( this, EventHandler::READ_MASK );
 
-    mStream.open();
-
-    mBottomModule = new Stream_1_0::Module( "Network Layer", new Sender( this, getHandle() ), new Receiver() );
+    mBottomModule = new Stream_1_0::Module( "Network Layer", new Sender( getHandle() ), new Receiver() );
 
     mStream.push( mBottomModule );
     mStream.push( new Stream_1_0::Module( "MetaData Layer", new MetaData(), new Stream_1_0::StreamThrough() ) );
@@ -57,7 +54,6 @@ void ServerEventHandler::open()
 void ServerEventHandler::close()
 {
     LOG_INFO( __FUNCTION__ << "() " << "called" );
-    mOwner->removeConnection( getHandle() );
 }
 
 int ServerEventHandler::handleInput( int fd )
@@ -95,7 +91,7 @@ int ServerEventHandler::handleInput( int fd )
 
         sleep( 1 ); // Wait until module cleaned up the thread and etc. not a pretty design, but simple and easy.
 
-        close();// let this instance be deleted
+        close(); // let this instance be deleted
         return 0;
     }
     else

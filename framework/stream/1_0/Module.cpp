@@ -10,8 +10,8 @@ Module::Module()
     : mNext( nullptr ),
       mArg( nullptr )
 {
-    mPipePaire[PIPE_READ_SIDE] = nullptr;
-    mPipePaire[PIPE_WRITE_SIDE] = nullptr;
+    mPipePair[PIPE_READ_SIDE] = nullptr;
+    mPipePair[PIPE_WRITE_SIDE] = nullptr;
 }
 
 Module::Module( const string &name,
@@ -20,8 +20,8 @@ Module::Module( const string &name,
                 void *arg )
     : mNext( nullptr )
 {
-    mPipePaire[PIPE_READ_SIDE] = nullptr;
-    mPipePaire[PIPE_WRITE_SIDE] = nullptr;
+    mPipePair[PIPE_READ_SIDE] = nullptr;
+    mPipePair[PIPE_WRITE_SIDE] = nullptr;
     if ( open( name, writer, reader, arg ) == -1 )
     {
         LOG_INFO( "fail to open, name=" << name );
@@ -77,18 +77,18 @@ int Module::open( const string &name,
 
 Task_2_0::Task *Module::getReader()
 {
-    return mPipePaire[PIPE_READ_SIDE];
+    return mPipePair[PIPE_READ_SIDE];
 }
 
 Task_2_0::Task *Module::getWriter()
 {
-    return mPipePaire[PIPE_WRITE_SIDE];
+    return mPipePair[PIPE_WRITE_SIDE];
 }
 
 void Module::setReader( Task_2_0::Task *reader )
 {
     closeImpl( PIPE_READ_SIDE );
-    mPipePaire[PIPE_READ_SIDE] = reader;
+    mPipePair[PIPE_READ_SIDE] = reader;
 
     if ( reader != nullptr )
     {
@@ -99,12 +99,12 @@ void Module::setReader( Task_2_0::Task *reader )
 void Module::setWriter( Task_2_0::Task *writer )
 {
     closeImpl( PIPE_WRITE_SIDE );
-    mPipePaire[PIPE_WRITE_SIDE] = writer;
+    mPipePair[PIPE_WRITE_SIDE] = writer;
 
     if ( writer != nullptr )
     {
         writer->mModule = this;
-        writer->mFlags &= ~Task_2_0::READER; // remove the flat
+        writer->mFlags &= ~Task_2_0::READER; // remove the flag
     }
 }
 
@@ -139,13 +139,13 @@ Module *Module::getNext()
 Task_2_0::Task *Module::getSibling( Task_2_0::Task *org )
 {
     LOG_INFO( "Module::" << __FUNCTION__ << "() " << "called" );
-    if ( mPipePaire[PIPE_READ_SIDE] == org )
+    if ( mPipePair[PIPE_READ_SIDE] == org )
     {
-        return mPipePaire[PIPE_WRITE_SIDE];
+        return mPipePair[PIPE_WRITE_SIDE];
     }
-    else if ( mPipePaire[PIPE_WRITE_SIDE] == org )
+    else if ( mPipePair[PIPE_WRITE_SIDE] == org )
     {
-        return mPipePaire[PIPE_READ_SIDE];
+        return mPipePair[PIPE_READ_SIDE];
     }
     else
     {
@@ -161,11 +161,10 @@ int Module::close()
     return 0;
 }
 
-int Module::closeImpl( PipePare which )
+int Module::closeImpl( PipePair which )
 {
-    if ( this->mPipePaire[which] == nullptr )
+    if ( this->mPipePair[which] == nullptr )
     {
-        //LOG_INFO( "Module::" << __FUNCTION__ << "() " << " no pipe craeted yet, pipe=" << which );
         return 0;
     }
     LOG_INFO( "Module::" << __FUNCTION__ << "() " << "called" );
@@ -173,7 +172,7 @@ int Module::closeImpl( PipePare which )
     
     // Copy task pointer to prevent problems when Task::close
     // changes the task pointer
-    Task_2_0::Task *task = this->mPipePaire[which];
+    Task_2_0::Task *task = this->mPipePair[which];
 
     // Change so that close doesn't get called again from the task.
     // Now close the task.
@@ -188,7 +187,7 @@ int Module::closeImpl( PipePare which )
     task->wait();
     delete task;
 
-    this->mPipePaire[which] = 0;
+    this->mPipePair[which] = 0;
     return result;
 }
 

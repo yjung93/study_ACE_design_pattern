@@ -2,14 +2,13 @@
 #define APPLICATIONS_EXAMPLE_STREAM_RECEIVER_HPP_
 
 /*
- * Acceptor.hpp
+ * Receiver.hpp
  *
  *  Created on: June 30, 2026
  *      Author: yjung93
  */
 #include <atomic>
 #include "framework/task/2_0/Task.hpp"
-#include "framework/stream/1_0/Module.hpp"
 
 namespace example_stream
 {

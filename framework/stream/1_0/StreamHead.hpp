@@ -15,8 +15,8 @@ class StreamHead : public Task_2_0::Task
     int open( void *arg = 0 ) override;
     int svc() override;
 
-    virtual int close();
-    virtual int put( string &msg );
+    int close( u_long flags = 0 ) override;
+    int put( string &msg ) override;
 
   private:
 };

@@ -17,7 +17,7 @@ int StreamHead::open( void *arg )
     LOG_INFO( __FUNCTION__ << "() " << "called" );
     return 0;
 }
-int StreamHead::close()
+int StreamHead::close( u_long flags )
 {
     LOG_INFO( __FUNCTION__ << "() " << "called" );
     return 0;

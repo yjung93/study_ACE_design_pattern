@@ -12,9 +12,13 @@ namespace Stream_1_0
 {
 Stream::Stream( void *arg, Module *head, Module *tail )
     : mStreamHead( nullptr ),
-      mStreamTail( nullptr ),
-      mLinkedUs( nullptr )
+      mStreamTail( nullptr )
 {
+    LOG_INFO( "Stream::" << __FUNCTION__ << "() " << "called" );
+    if ( open( arg, head, tail ) == -1 )
+    {
+        LOG_ERROR( "Stream::" << __FUNCTION__ << "() " << "Error open()" );
+    }
 }
 
 Stream::~Stream()
@@ -75,13 +79,11 @@ int Stream::open( void *arg,
 
 int Stream::close()
 {
-    LOG_INFO("Stream::"<< __FUNCTION__ << "() " << "called" );
+    LOG_INFO( "Stream::" << __FUNCTION__ << "() " << "called" );
     const lock_guard<mutex> lock( mMutex );
     if ( mStreamHead != nullptr &&
          mStreamTail != nullptr )
     {
-        // unlink();
-
         while ( mStreamHead->getNext() != mStreamTail )
         {
             if ( pop() == -1 )
@@ -104,8 +106,6 @@ int Stream::close()
 
         mStreamHead = nullptr;
         mStreamTail = nullptr;
-
-        mFinalClose.notify_all();
     }
 
     return 0;
@@ -113,16 +113,16 @@ int Stream::close()
 
 int Stream::push( Module *module )
 {
-    LOG_INFO("Stream::"<< __FUNCTION__ << "() " << "called" );
+    LOG_INFO( "Stream::" << __FUNCTION__ << "() " << "called" );
     return pushModule( module, mStreamHead->getNext(), mStreamHead );
 }
 
 int Stream::pop()
 {
-    LOG_INFO("Stream::"<< __FUNCTION__ << "() " << "called" );
+    LOG_INFO( "Stream::" << __FUNCTION__ << "() " << "called" );
     if ( mStreamHead->getNext() == mStreamTail )
     {
-        LOG_INFO("Stream::"<< __FUNCTION__ << "() " << " reached to trail" );
+        LOG_INFO( "Stream::" << __FUNCTION__ << "() " << " reached to trail" );
         return -1;
     }
     else

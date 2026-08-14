@@ -26,17 +26,7 @@ namespace Task_2_0
 enum
 {
     // Identifies a Task as being the "reader" in a Module.
-    READER = 01,
-    // Just flush data messages in the queue.
-    FLUSHDATA = 02,
-    // Flush all messages in the Queue.
-    FLUSHALL = 04,
-    // Flush read queue
-    FLUSHR = 010,
-    // Flush write queue
-    FLUSHW = 020,
-    // Flush both queues
-    FLUSHRW = 030
+    READER = 01
 };
 
 class Task
@@ -87,4 +77,4 @@ class Task
 
 } // namespace Task_2_0
 
-#endif /* TASK_2_0_EVENTHANDLER_HPP_ */
+#endif /* TASK_2_0_HPP_ */

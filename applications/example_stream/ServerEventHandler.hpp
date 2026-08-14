@@ -1,5 +1,5 @@
-#ifndef APPLICATIONS_EXAMPLE_1_ServerEventHandler_HPP_
-#define APPLICATIONS_EXAMPLE_1_ServerEventHandler_HPP_
+#ifndef APPLICATIONS_EXAMPLE_STREAM_SERVER_EVENT_HANDLER_HPP_
+#define APPLICATIONS_EXAMPLE_STREAM_SERVER_EVENT_HANDLER_HPP_
 
 /*
  * ServerEventHandler.h
@@ -37,4 +37,4 @@ class ServerEventHandler : public Reactor_1_0::EventHandler
 
 } /* namespace example_stream */
 
-#endif /* APPLICATIONS_EXAMPLE_1_ServerEventHandler_HPP_ */
+#endif /* APPLICATIONS_EXAMPLE_STREAM_SERVER_EVENT_HANDLER_HPP_ */

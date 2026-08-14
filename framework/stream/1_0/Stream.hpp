@@ -30,7 +30,6 @@ class Stream
   protected:
     Module *mStreamHead;
     Module *mStreamTail;
-    Stream *mLinkedUs;
     mutex mMutex;
 
   private:
@@ -38,7 +37,6 @@ class Stream
                     Module *currentTop = 0,
                     Module *head = 0 );
 
-    condition_variable mFinalClose;
 };
 
 } // namespace Stream_1_0

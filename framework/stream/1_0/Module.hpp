@@ -9,7 +9,7 @@ namespace Stream_1_0
 class Module
 {
   public:
-    enum PipePare
+    enum PipePair
     {
         PIPE_READ_SIDE,
         PIPE_WRITE_SIDE,
@@ -46,13 +46,13 @@ class Module
     Task_2_0::Task *getSibling( Task_2_0::Task *org );
 
     int close();
-    int closeImpl( PipePare which );
+    int closeImpl( PipePair which );
 
     void link( Module *module );
 
   private:
     string mName;
-    Task_2_0::Task *mPipePaire[PIPE_MAX];
+    Task_2_0::Task *mPipePair[PIPE_MAX];
     Module *mNext;
     void *mArg;
 };

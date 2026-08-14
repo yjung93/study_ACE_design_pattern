@@ -5,12 +5,6 @@
 #include "Receiver.hpp"
 #include "DataType.hpp"
 
-#include <chrono>
-#include <iomanip>
-#include <sstream>
-#include <unistd.h>
-#include <netdb.h>
-#include <arpa/inet.h>
 #include <algorithm>
 
 namespace example_stream
@@ -97,7 +91,7 @@ int Receiver::svc()
 
                         data = {
                             { Stream_1_0::MessageType, Stream_1_0::VendorData },
-                            { RecievedMessage, completedMessage },
+                            { ReceivedMessage, completedMessage },
                         };
 
                         message = Framework_Common::Utils::formatKeyValue( data );
